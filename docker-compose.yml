@@ -1,0 +1,31 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres:10.16
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: thibaut
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: kumanomi
+    volumes:
+      - pgsql-volume-container:/var/lib/mysql
+    ports:
+      - 5432:5432
+    networks:
+      - kumanomi-network
+
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    ports:
+      - 8080:8080
+    networks:
+      - kumanomi-network
+
+networks:
+  kumanomi-network:
+
+volumes:
+  pgsql-volume-container:
