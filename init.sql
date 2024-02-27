@@ -1,3 +1,5 @@
+create extension if not exists pgcrypto;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -40,3 +42,5 @@ FROM
      UNION ALL SELECT 'Jackson'
      UNION ALL SELECT 'Taylor') AS last_names
 LIMIT 20;
+
+
