@@ -1,7 +1,8 @@
 const express = require('express');
 const sessionsLogic = require('../logic/sessionsLogic');
 const app = express();
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
+// import { Request, Response } from 'express';
 
 // const login = async () => {
     

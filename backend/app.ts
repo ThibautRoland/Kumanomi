@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const sessionsController = require('./controller/sessionsController');  
+const sessionsController = require('./controller/sessionsController.ts');  
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-  })
+// app.get('/', (req: any, res: any) => {
+//     res.send('Hello World!')
+//   })
 
 app.use('/sessions', sessionsController);
   
