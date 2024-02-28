@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const sessionsLogic = require('../logic/logic');
+const sessionsLogic = require('../logic/sessions.logic');
 
 type RequestLogin = {
   email: string,
@@ -7,29 +7,28 @@ type RequestLogin = {
 }
 
 
-export default class TutorialController {
+export default class SessionsController {
 
   async login(req: Request, res: Response) {
-
+    console.log('bodyreq: ', req.body)
 
     if (req.body === null ) {
       return res.status(422).json("body is null")
-  }
+    }
 
-  const body = req.body as RequestLogin;
+    const body = req.body as RequestLogin;
 
-  if (body.email === null || body.password === null) {
+    if (body.email === null || body.password === null) {
       return res.status(422).json("body is null")
-  }
+    }
 
-  try {
+    try {
       const result = await sessionsLogic.isExist();
       return res.status(200).json("result")
 
-  } catch (error) {
-      return res.status(522).json("big error "+error)
-  }
-
+    } catch (error) {
+        return res.status(522).json("big error "+error)
+    }
   }
 
   /*async create(req: Request, res: Response) {
