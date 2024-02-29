@@ -24,6 +24,11 @@ export default function Login() {
         setPassword(value);
     }
 
+    const emailValidation = (email: string) => {
+        const regex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        return (!(email === '') && email.match(regex))
+    }
+
     const login = () => {
         //TODO check if the email is OK with regex
         // TODO hidden password ******
@@ -31,6 +36,12 @@ export default function Login() {
             email: getEmail,
             password: getPassword
         }
+
+        if (!emailValidation(getEmail)) {
+            setStateLogin(StateLogin.Failed)
+            return
+        }
+
         const canConnect = loginApi(loginData)
         canConnect.then(function(resBool)  {
             console.log("bool from promise" + resBool)
@@ -61,7 +72,7 @@ export default function Login() {
 
                 <input placeholder="john.doe@example.com" type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
                 <p>password</p>
-                <input placeholder="password" type="text" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
+                <input placeholder="password" type="password" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
                 <button className='border p-3 rounded-lg' onClick={login}>Login</button>
             </div>
 
