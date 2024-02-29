@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
+import { RequestLogin } from "../interfaces/RequestLogin";
 const sessionsLogic = require('../logic/sessions.logic');
-
-type RequestLogin = {
-  email: string,
-  password: string
-}
-
 
 export default class SessionsController {
 
@@ -23,8 +18,8 @@ export default class SessionsController {
     }
 
     try {
-      const result = await sessionsLogic.isExist();
-      return res.status(200).json("result")
+      const result = await sessionsLogic.isExist(body);
+      return res.status(200).json(result)
 
     } catch (error) {
         return res.status(522).json("big error "+error)

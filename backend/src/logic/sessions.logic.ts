@@ -1,19 +1,21 @@
 
+import { RequestLogin } from "../interfaces/RequestLogin";
+import sessionsRepo from "../repositories/sessions.repository";
 
-type ResponseUserAndPasswordExist = {
-    exist: boolean
-}
-function isExist(): Promise<ResponseUserAndPasswordExist> {
-    return new Promise((resolve, reject) => {
-        const res = {exist : true} as ResponseUserAndPasswordExist
-        resolve(res)
-        /*doctorLogic.getAllDoctors((error, doctors) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(doctors);
-            }
-        });*/
+// https://www.codecademy.com/resources/docs/typescript/promises
+// promise + try catch to read the promise
+function isExist(req: RequestLogin): Promise<Boolean> {
+    return new Promise(async (resolve, reject) => {
+
+        try {   
+            const value = await sessionsRepo.login(req.email, req.password);
+            console.log(value.rows)
+
+            resolve(value.rows[0].case === 'TRUE')
+            
+        } catch (error){
+            reject(error)
+        }
     });
 }
 
