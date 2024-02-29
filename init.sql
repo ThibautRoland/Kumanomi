@@ -18,7 +18,7 @@ SELECT
     INTERVAL '1' MONTH * FLOOR(RANDOM() * 12) +
     INTERVAL '1' DAY * FLOOR(RANDOM() * 28),
     CONCAT(first_names.first_name, '.', last_names.last_name, '@example.com'),
-    'password',
+    (pgp_sym_encrypt('password', 'kumanomi_secret_key')),
     FLOOR(RANDOM() * 5) + 1
 FROM
     (SELECT 'John' AS first_name
