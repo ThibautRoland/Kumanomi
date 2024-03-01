@@ -5,6 +5,7 @@ import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
 enum StateLogin {
     WaitingForLogin ,
     Failed,
+    WrongEmailFormat,
     Success,
     ErrorBack
 }
@@ -39,7 +40,8 @@ export default function Login() {
         }
 
         if (!emailValidation(getEmail)) {
-            setStateLogin(StateLogin.Failed)
+            setStateLogin(StateLogin.WrongEmailFormat)
+            console.log(getStateLogin)
             return
         }
 
@@ -48,14 +50,17 @@ export default function Login() {
             console.log("bool from promise" + resBool)
             if (resBool) {
                 setStateLogin(StateLogin.Success)
+                console.log(getStateLogin)
                 return
             }
             if (resBool === false ){
                 setStateLogin(StateLogin.Failed)
+                console.log(getStateLogin)
                 return 
             }
             // no response from api
             setStateLogin(StateLogin.ErrorBack)
+            console.log(getStateLogin)
 
         })
     }
@@ -65,20 +70,22 @@ export default function Login() {
         <div className="flex flex-row">
             <div className="basis-1/3"></div>
 
-            <div className={`${ getStateLogin  === StateLogin.Failed || StateLogin.WaitingForLogin ? '' : 'hidden'}`}>
-                <div className={`basis-1/3 ${ getStateLogin  == StateLogin.Failed ? 'border-2 border-red-400':'' }`} >
-                    <p>email address</p> 
-                    <input placeholder="john.doe@example.com" type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
+            <div className={`${ (getStateLogin  === 0 || getStateLogin === 1 || getStateLogin === 2 ) ? 'display' : 'hidden'}`}>
+                <div className={`basis-1/3 ${ getStateLogin === StateLogin.Failed ? 'border-2 border-red-400': '' }`} >
+                    <div className={`${ getStateLogin === StateLogin.WrongEmailFormat ? 'border-2 border-red-400': ''}`}>
+                        <p>email address</p> 
+                        <input placeholder={`${ getStateLogin === StateLogin.WrongEmailFormat ? 'Wrong email format': 'john.doe@example.com '}`}type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
+                    </div>
                     <p>password</p>
                     <input placeholder="password" type="password" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
                     <button className='border p-3 rounded-lg' onClick={login}>Login</button>
                 </div>
             </div>
 
-            <div className={`${StateLogin.Success ? '' : 'hidden'}`}>
+            <div className={`${getStateLogin === StateLogin.Success ? '' : 'hidden'}`}>
                 <LoginSucces/>
             </div>
-            <div className={`${StateLogin.ErrorBack ? '' : 'hidden'}`}>
+            <div className={`${getStateLogin === StateLogin.ErrorBack ? '' : 'hidden'}`}>
                 <LoginBackError/>
             </div>
             
