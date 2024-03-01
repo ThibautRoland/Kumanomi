@@ -1,4 +1,5 @@
 import { loginApi } from '@/api/sessions/sessions'
+import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
 
 enum StateLogin {
@@ -64,18 +65,24 @@ export default function Login() {
         <div className="flex flex-row">
             <div className="basis-1/3"></div>
 
-            <div className={`basis-1/3 ${ getStateLogin  == StateLogin.Failed ? 'border-2 border-red-400':'' }`} >
-                <p>email address</p> 
-
-                <p className={getStateLogin === StateLogin.Success ? 'display' : 'hidden'}>Bravo ! vous allez etre bientot redirigé</p>
-                <p className={getStateLogin === StateLogin.ErrorBack ? 'display' : 'hidden'}>Come back later please</p>
-
-                <input placeholder="john.doe@example.com" type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
-                <p>password</p>
-                <input placeholder="password" type="password" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
-                <button className='border p-3 rounded-lg' onClick={login}>Login</button>
+            <div className={`${ getStateLogin  === StateLogin.Failed || StateLogin.WaitingForLogin ? '' : 'hidden'}`}>
+                <div className={`basis-1/3 ${ getStateLogin  == StateLogin.Failed ? 'border-2 border-red-400':'' }`} >
+                    <p>email address</p> 
+                    <input placeholder="john.doe@example.com" type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
+                    <p>password</p>
+                    <input placeholder="password" type="password" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
+                    <button className='border p-3 rounded-lg' onClick={login}>Login</button>
+                </div>
             </div>
 
+            <div className={`${StateLogin.Success ? '' : 'hidden'}`}>
+                <LoginSucces/>
+            </div>
+            <div className={`${StateLogin.ErrorBack ? '' : 'hidden'}`}>
+                <LoginBackError/>
+            </div>
+            
+            
             <div className="basisi-1/3"></div>
         </div>
 
