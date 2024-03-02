@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { welcome } from "../controllers/home.controller";
+import { authenticateToken } from "../middleware/authenticateToken";
 
 class HomeRoutes {
   router = Router();
@@ -9,7 +10,7 @@ class HomeRoutes {
   }
 
   intializeRoutes() {
-    this.router.get("/", welcome);
+    this.router.get("/",authenticateToken, welcome);
   }
 }
 
