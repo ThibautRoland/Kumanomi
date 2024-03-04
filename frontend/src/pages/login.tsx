@@ -2,6 +2,7 @@ import { saveTokenInCookie } from '@/api/cookies/cookies'
 import { loginApi } from '@/api/sessions/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
+import { useRouter } from 'next/router'
 
 enum StateLogin {
     WaitingForLogin ,
@@ -12,6 +13,7 @@ enum StateLogin {
 }
 
 export default function Login() {
+    const router = useRouter()
 
     const [getEmail, setEmail] = useState("John.Doe@example.com")
     const [getPassword, setPassword] = useState("password")
@@ -48,7 +50,6 @@ export default function Login() {
 
         const canConnect = loginApi(loginData)
         canConnect.then(function(token)  {
-            console.log("token from promise" + token)
 
             if (token == null){
                 setStateLogin(StateLogin.ErrorBack)
@@ -63,8 +64,11 @@ export default function Login() {
             setStateLogin(StateLogin.Success)
             
             saveTokenInCookie(token)
-            console.log(token)
-
+            
+            router.push({
+                pathname: '/dashboard',
+                query: { token: token }
+            }, '/dashboard')
         })
     }
 
