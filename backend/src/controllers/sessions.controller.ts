@@ -5,10 +5,10 @@ const sessionsLogic = require('../logic/sessions.logic');
 export default class SessionsController {
 
   async login(req: Request, res: Response) {
-    console.log('bodyreq: ', req.body)
 
-    if (req.body === null ) {
-      return res.status(422).json("body is null")
+    //TODO maybe use lodash instead ?
+    if (Object.keys(req.body).length === 0) {
+      return res.status(422).json("body is empty")
     }
 
     const body = req.body as RequestLogin;
@@ -18,76 +18,16 @@ export default class SessionsController {
     }
 
     try {
-      const result = await sessionsLogic.isExist(body);
-      return res.status(200).json(result)
+      const token = await sessionsLogic.isExist(body);
+
+      // is empty
+      if (token.length === 0) {
+        return res.status(404).json("user not found")  
+      }
+      return res.status(200).json(token)
 
     } catch (error) {
         return res.status(522).json("big error "+error)
     }
   }
-
-  /*async create(req: Request, res: Response) {
-    try {
-      res.status(201).json({
-        message: "create OK",
-        reqBody: req.body
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Internal Server Error!"
-      });
-    }
-  }
-
-  async findAll(req: Request, res: Response) {
-    try {
-      res.status(200).json({
-        message: "findAll OK"
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Internal Server Error!"
-      });
-    }
-  }
-
-  async findOne(req: Request, res: Response) {
-    try {
-      res.status(200).json({
-        message: "findOne OK",
-        reqParamId: req.params.id
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Internal Server Error!"
-      });
-    }
-  }
-
-  async update(req: Request, res: Response) {
-    try {
-      res.status(200).json({
-        message: "update OK",
-        reqParamId: req.params.id,
-        reqBody: req.body
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Internal Server Error!"
-      });
-    }
-  }
-
-  async delete(req: Request, res: Response) {
-    try {
-      res.status(200).json({
-        message: "delete OK",
-        reqParamId: req.params.id
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Internal Server Error!"
-      });
-    }
-  }*/
 }
