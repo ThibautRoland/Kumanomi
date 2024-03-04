@@ -1,3 +1,4 @@
+import { saveTokenInCookie } from '@/api/cookies/cookies'
 import { loginApi } from '@/api/sessions/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
@@ -12,8 +13,8 @@ enum StateLogin {
 
 export default function Login() {
 
-    const [getEmail, setEmail] = useState("")
-    const [getPassword, setPassword] = useState("")
+    const [getEmail, setEmail] = useState("John.Doe@example.com")
+    const [getPassword, setPassword] = useState("password")
     const [getStateLogin, setStateLogin] = useState(StateLogin.WaitingForLogin)
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,21 +47,23 @@ export default function Login() {
         }
 
         const canConnect = loginApi(loginData)
-        canConnect.then(function(resBool)  {
-            console.log("bool from promise" + resBool)
-            if (resBool) {
-                setStateLogin(StateLogin.Success)
-                console.log(getStateLogin)
+        canConnect.then(function(token)  {
+            console.log("token from promise" + token)
+
+            if (token == null){
+                setStateLogin(StateLogin.ErrorBack)
                 return
             }
-            if (resBool === false ){
+    
+            
+            if (token.length === 0) {
                 setStateLogin(StateLogin.Failed)
-                console.log(getStateLogin)
-                return 
+                return
             }
-            // no response from api
-            setStateLogin(StateLogin.ErrorBack)
-            console.log(getStateLogin)
+            setStateLogin(StateLogin.Success)
+            
+            saveTokenInCookie(token)
+            console.log(token)
 
         })
     }
