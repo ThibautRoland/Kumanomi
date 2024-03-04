@@ -17,3 +17,7 @@ SELECT
         THEN 'TRUE'
         ELSE 'FALSE'
     END;
+
+
+
+# front todo https://dribbble.com/shots/21594661-Neo-Brutalism-Landing-Page
