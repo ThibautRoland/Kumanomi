@@ -6,16 +6,13 @@ import { useEffect, useState } from 'react';
 
 type IndexProps = {
   token: string
-} 
+}
+
+
 
 export default function Dashboard({token}: IndexProps) {
   const router = useRouter();
   const [tokenState, setTokenState] = useState("")
-
-  useEffect(() => {
-    console.log("token props -> " + token);
-    // setTokenState(router.query.token as string)
-  }, []);
 
   function printCookie(){
     const HAAAA_COOKIE = getBearerToken()
@@ -35,22 +32,30 @@ export default function Dashboard({token}: IndexProps) {
     );
   }
 
+  export const config = {
+    runtime: 'nodejs',
+  }
 
-  export async function getServerSideProps() {
-    // todo : get token from cookies
-    const token = getBearerToken()
-    // console.log("haaa cookie from dashbord serversideprops -> " +token)
+  export async function getServerSideProps(context : any) {
+    //TODO use an auto parser
+    const allCookiesStr = context.req.headers.cookie as string
+    console.log(context.req.headers.cookie)
 
-    
-    // const taskRequest = {
-    //   id: 1,
-    //   token: "token_from_cookies"
-    // } as tasksRequest
-    // const res = await getTasksApi(taskRequest)
+    const keyValuePairs: string[] = allCookiesStr.split('; ');
+
+    const dataMap: { [key: string]: string } = {};
+    keyValuePairs.forEach(pair => {
+      const [key, value] = pair.split('=');
+      dataMap[key] = value;
+    });
+
+const tokenValue = dataMap['token'];
+
+console.log("token from GetServerSideProps", tokenValue)
 
     return {
       props: {
-        token
+
       }
     }
   }
