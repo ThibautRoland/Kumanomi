@@ -11,12 +11,11 @@ function isExist(req: RequestLogin): Promise<String> {
         try {   
             const value = await sessionsRepo.login(req.email, req.password);
             console.log(value.rows)
-            
-            const userExist = value.rows[0].case === 'TRUE'
-            if (!userExist) {
+            if (value.rows.length<1) {
                 resolve("")
             }
-            const newAuthToken =  createJwtToken(req.email)
+            const res = value.rows[0]
+            const newAuthToken =  createJwtToken(req.email, res.id)
             resolve(newAuthToken)
             
         } catch (error){
@@ -27,8 +26,8 @@ function isExist(req: RequestLogin): Promise<String> {
 
 const SECRET_KEY_JWT = 'KUMANOMI_JWT_KEY_ENCRYPTION_UN_PEU_COMME_CE_QUON_A_FAIT_POUR_POSTGRES_UNE_SORTE_DE_CLEF_RANDOME_QUON_VA_STOCKER_EN_VARIABLE_DENV_CA_VA_ZINC_SINON'
 
-function createJwtToken(email : string){
-    return jwt.sign({ email: email}, SECRET_KEY_JWT);
+function createJwtToken(email : string, id : number){
+    return jwt.sign({ email: email, id : id}, SECRET_KEY_JWT);
 }
 
 module.exports = {

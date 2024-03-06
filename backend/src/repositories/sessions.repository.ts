@@ -43,7 +43,9 @@ class SessionRepository {
   //https://www.postgresql.org/docs/current/pgcrypto.html#PGCRYPTO-PGP-ENC-FUNCS-PGP-SYM-ENCRYPT
   // pgp_sym_decrypt_bytea(msg bytea, psw text [, options text ]) returns bytea
   login(email: string, password: string): Promise<QueryResult> {
-    const query: string = `SELECT
+
+    const query = "SELECT id, clearance_level FROM users  WHERE pgp_sym_decrypt(password::bytea, 'kumanomi_secret_key') = ($1) AND email  = ($2)"
+    /*const query: string = `SELECT
                 CASE
                     WHEN EXISTS (
                         SELECT pgp_sym_decrypt(password::bytea, 'kumanomi_secret_key')
@@ -52,9 +54,7 @@ class SessionRepository {
                         )
                     THEN 'TRUE'
                     ELSE 'FALSE'
-                END;`;
-
-            
+                END;`;*/            
           
     const values = [password, email]
 
