@@ -11,7 +11,9 @@ enum StateLogin {
     Success,
     ErrorBack
 }
-
+/*
+curl get with username : password
+*/
 export default function Login() {
     const router = useRouter()
 
@@ -48,8 +50,8 @@ export default function Login() {
             return
         }
 
-        const canConnect = loginApi(loginData)
-        canConnect.then(function(token)  {
+        const tokenFromApi = loginApi(loginData)
+        tokenFromApi.then(function(token)  {
 
             if (token == null){
                 setStateLogin(StateLogin.ErrorBack)

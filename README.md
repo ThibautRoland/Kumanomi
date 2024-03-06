@@ -21,3 +21,8 @@ SELECT
 
 
 # front todo https://dribbble.com/shots/21594661-Neo-Brutalism-Landing-Page
+
+## TODO
+- do routing for controllers (! middleware auth protected)
+- show tasks in dashboard
+- clean code

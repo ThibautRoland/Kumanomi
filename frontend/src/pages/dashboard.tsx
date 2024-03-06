@@ -1,16 +1,19 @@
-import { getTasksApi } from '@/api/sessions/sessions'
+
 import { tasksRequest } from '@/interfaces/sessions';
+import { getProtectedEndpoint, getTasksApi } from '@/api/sessions/sessions';
 import { getBearerToken } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
+import { task } from '@/interfaces/tasks';
 
 type IndexProps = {
-  token: string
+  msg: string,
+  tasks: task[]
 }
 
 
 
-export default function Dashboard({token}: IndexProps) {
+export default function Dashboard({msg, tasks}: IndexProps) {
   const router = useRouter();
   const [tokenState, setTokenState] = useState("")
 
@@ -26,8 +29,18 @@ export default function Dashboard({token}: IndexProps) {
 
     return (<div>
           <h1 className="text-center font-bold text-3xl py-5">Dashboard</h1>
+          <h1 className="text-center font-bold text-3xl py-5">{msg}</h1>
+  
           <button className='border p-3 rounded-lg' onClick={printCookie}>get token</button>
           <button className='border p-3 rounded-lg' onClick={printProps}>get props</button>
+          <div>
+            {tasks.map((task, i) => (
+              <div key={i}>
+                <p>{task.id}</p>
+                <p>{task.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
     );
   }
@@ -49,13 +62,18 @@ export default function Dashboard({token}: IndexProps) {
       dataMap[key] = value;
     });
 
-const tokenValue = dataMap['token'];
+    const tokenValue = dataMap['token'];
 
-console.log("token from GetServerSideProps", tokenValue)
 
-    return {
-      props: {
 
-      }
-    }
+    console.log("token from GetServerSideProps", tokenValue)
+    const welcomeMsg = await getProtectedEndpoint(tokenValue)
+    const tasks = await getTasksApi(tokenValue)
+    console.log("welcome ?", welcomeMsg)
+        return {
+          props: {
+            msg : welcomeMsg.message,
+            tasks : tasks
+          }
+        }
   }

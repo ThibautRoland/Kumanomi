@@ -4,12 +4,14 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
 export function middleware(request: NextRequest) {
+  console.log("---------------middleware backemarque req-----")
+  console.log(request)
 
   const tokenFromClientRequest = request.cookies.get('token')?.value
   console.log("tokenFromClientRequest" ,tokenFromClientRequest)
 
   if (tokenFromClientRequest && !request.nextUrl.pathname.startsWith('/dashboard')) {
-    cookies().set('token', 'lee', { secure: true })
+    // cookies().set('token', 'lee', { secure: true })
     return Response.redirect(new URL('/dashboard', request.url))
   }
 

@@ -1,4 +1,5 @@
 import { loginRequest, tasksRequest } from "@/interfaces/sessions"
+import { task } from "@/interfaces/tasks"
 
 const API_HOST = process.env.API_HOST
 const API_PORT = process.env.API_PORT
@@ -24,24 +25,39 @@ export async function loginApi(loginData: loginRequest) : Promise<string | null>
     }
 }
 
+export async function getProtectedEndpoint(token : string) : Promise<any> {
 
-
-export async function getTasksApi(taskRequest: tasksRequest) : Promise<any> {
-
-    /*const url = `http://${API_HOST}:${API_PORT}/${taskRequest.id}/tasks`
+    const url = `http://${API_HOST}:${API_PORT}/api`
 
     try {
         const res = await fetch(url, {
             method: 'GET',
-            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${taskRequest.token}`},
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
         })
-        const canConnect = await res.json() as boolean
-        return canConnect
+        if (res.status !== 200) {
+            return { message : "ça marche pas"} 
+        }
+        const welcomeMsg = await res.json() as string
+        return welcomeMsg
+    } catch (error){
+        console.log(error)
+       return error 
+    }
+}
+
+export async function getTasksApi(token: string) : Promise<any> {
+
+    const url = `http://${API_HOST}:${API_PORT}/sessions/tasks`
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+        })
+        const tasks = await res.json() as task[]
+        return tasks
     } catch (error){
         console.log(error)
        return null 
-    }*/
-    return {
-        "task1" : "haaaa"
     }
 }
