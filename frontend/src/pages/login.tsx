@@ -12,7 +12,7 @@ enum StateLogin {
     ErrorBack
 }
 /*
-curl get with username : password
+TODO separate WrongEmailFormat from StateLogin
 */
 export default function Login() {
     const router = useRouter()
@@ -37,8 +37,6 @@ export default function Login() {
     }
 
     const login = () => {
-        //TODO check if the email is OK with regex
-        // TODO hidden password ******
         const loginData = {
             email: getEmail,
             password: getPassword
@@ -46,7 +44,6 @@ export default function Login() {
 
         if (!emailValidation(getEmail)) {
             setStateLogin(StateLogin.WrongEmailFormat)
-            console.log(getStateLogin)
             return
         }
 
@@ -57,7 +54,6 @@ export default function Login() {
                 setStateLogin(StateLogin.ErrorBack)
                 return
             }
-    
             
             if (token.length === 0) {
                 setStateLogin(StateLogin.Failed)

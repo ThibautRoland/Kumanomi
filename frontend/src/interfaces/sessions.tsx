@@ -3,7 +3,3 @@ export type loginRequest = {
     password: string
 }
 
-export type tasksRequest = {
-    id: number,
-    token: string
-}

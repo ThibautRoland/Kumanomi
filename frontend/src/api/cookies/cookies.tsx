@@ -7,8 +7,11 @@ export function saveTokenInCookie(token : string){
 }
 
 export function getBearerToken() : string{
-    //todo check what happen if undefined
-    return Cookies.get('token') as string
+    const token = Cookies.get('token')
+    if (typeof token === "string"){
+        return token
+    }
+    return ""
 }
 
 export function getTokenFromContext(context: any) : string {

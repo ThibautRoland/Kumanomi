@@ -1,47 +1,31 @@
 
-import { tasksRequest } from '@/interfaces/sessions';
+import { tasksRequest } from '@/interfaces/tasks';
 import { getProtectedEndpoint, getTasksApi } from '@/api/sessions/sessions';
 import { getBearerToken, getTokenFromContext } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { task } from '@/interfaces/tasks';
+import { Layout } from '@/components/layout';
 
 type IndexProps = {
-  msg: string,
   tasks: task[]
 }
 
-
-
-export default function Dashboard({msg, tasks}: IndexProps) {
+export default function Dashboard({tasks}: IndexProps) {
   const router = useRouter();
   const [tokenState, setTokenState] = useState("")
 
-  function printCookie(){
-    const HAAAA_COOKIE = getBearerToken()
-    console.log("from getBerarToken "+HAAAA_COOKIE)
-  }
-
-  function printProps(){
-    const tokenProp: string | string[] | undefined = router.query.token
-    console.log("props sent from login page "+tokenProp)
-  }
-
-    return (<div>
+    return (<Layout>
           <h1 className="text-center font-bold text-3xl py-5">Dashboard</h1>
-          <h1 className="text-center font-bold text-3xl py-5">{msg}</h1>
-  
-          <button className='border p-3 rounded-lg' onClick={printCookie}>get token</button>
-          <button className='border p-3 rounded-lg' onClick={printProps}>get props</button>
-          <div>
+          
             {tasks.map((task, i) => (
               <div key={i}>
                 <p>{task.id}</p>
                 <p>{task.name}</p>
               </div>
             ))}
-          </div>
-        </div>
+          
+        </Layout>
     );
   }
 
@@ -50,16 +34,11 @@ export default function Dashboard({msg, tasks}: IndexProps) {
   }
 
   export async function getServerSideProps(context : any) {
-    //TODO use an auto parser
     const tokenValue = getTokenFromContext(context)
-
-    console.log("token from GetServerSideProps", tokenValue)
-    const welcomeMsg = await getProtectedEndpoint(tokenValue)
     const tasks = await getTasksApi(tokenValue)
-    console.log("welcome ?", welcomeMsg)
+
         return {
           props: {
-            msg : welcomeMsg.message,
             tasks : tasks
           }
         }

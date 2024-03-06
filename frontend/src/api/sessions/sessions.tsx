@@ -1,4 +1,4 @@
-import { loginRequest, tasksRequest } from "@/interfaces/sessions"
+import { loginRequest} from "@/interfaces/sessions"
 import { task } from "@/interfaces/tasks"
 
 const API_HOST = process.env.API_HOST
@@ -20,7 +20,7 @@ export async function loginApi(loginData: loginRequest) : Promise<string | null>
 
         return ""
     } catch (error){
-        console.log(error)
+        console.log("error from loginApi", error)
        return null 
     }
 }
@@ -63,7 +63,11 @@ export async function getTasksApi(token: string) : Promise<any> {
         const tasks = await res.json() as task[]
         return tasks
     } catch (error){
-        console.log(error)
+        console.log("error from getTasksApi",error)
        return null 
     }
+}
+
+function aa (){
+
 }
