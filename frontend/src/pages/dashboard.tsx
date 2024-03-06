@@ -1,7 +1,7 @@
 
 import { tasksRequest } from '@/interfaces/sessions';
 import { getProtectedEndpoint, getTasksApi } from '@/api/sessions/sessions';
-import { getBearerToken } from '@/api/cookies/cookies'
+import { getBearerToken, getTokenFromContext } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { task } from '@/interfaces/tasks';
@@ -51,20 +51,7 @@ export default function Dashboard({msg, tasks}: IndexProps) {
 
   export async function getServerSideProps(context : any) {
     //TODO use an auto parser
-    const allCookiesStr = context.req.headers.cookie as string
-    console.log(context.req.headers.cookie)
-
-    const keyValuePairs: string[] = allCookiesStr.split('; ');
-
-    const dataMap: { [key: string]: string } = {};
-    keyValuePairs.forEach(pair => {
-      const [key, value] = pair.split('=');
-      dataMap[key] = value;
-    });
-
-    const tokenValue = dataMap['token'];
-
-
+    const tokenValue = getTokenFromContext(context)
 
     console.log("token from GetServerSideProps", tokenValue)
     const welcomeMsg = await getProtectedEndpoint(tokenValue)

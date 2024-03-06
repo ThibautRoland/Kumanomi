@@ -54,6 +54,12 @@ export async function getTasksApi(token: string) : Promise<any> {
             method: 'GET',
             headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
         })
+        if (res.status !== 200) {
+            return [{ 
+                id: 0,
+                name: "Not a task"
+            }]
+        }
         const tasks = await res.json() as task[]
         return tasks
     } catch (error){
