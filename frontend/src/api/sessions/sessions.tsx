@@ -1,3 +1,4 @@
+import { project } from "@/interfaces/project"
 import { loginRequest, userAuth} from "@/interfaces/sessions"
 import { task } from "@/interfaces/tasks"
 
@@ -70,6 +71,27 @@ export async function getTasksApi(token: string) : Promise<any> {
        return null 
     }
 }
+
+export async function getProjectByID(projectID: number ,token: string) : Promise<Response | null> {
+
+    const url = `http://${API_HOST}:${API_PORT}/projects/${projectID}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+        })
+
+        console.log()
+
+        return res
+        
+    } catch (error){
+        console.log("error from getTasksApi",error)
+       return null 
+    }
+}
+
 
 function aa (){
 
