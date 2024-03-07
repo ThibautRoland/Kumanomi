@@ -59,7 +59,7 @@ export async function getTasksApi(token: string) : Promise<any> {
         })
         if (res.status !== 200) {
             return [{ 
-                id: 0,
+                id: -1,
                 name: "Not a task"
             }]
         }

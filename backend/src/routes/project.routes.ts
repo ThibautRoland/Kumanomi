@@ -10,7 +10,7 @@ class ProjectRoutes {
     }
   
     intializeRoutes() {
-      this.router.get("/index", this.projectsController.getAllProjects);
+      this.router.get("/", this.projectsController.getAllProjects);
     }
   }
   
