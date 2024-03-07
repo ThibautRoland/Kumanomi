@@ -1,4 +1,4 @@
-import { saveTokenInCookie } from '@/api/cookies/cookies'
+import { saveTokenInCookie, saveUserIdInCookie } from '@/api/cookies/cookies'
 import { loginApi } from '@/api/sessions/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
@@ -47,25 +47,26 @@ export default function Login() {
             return
         }
 
-        const tokenFromApi = loginApi(loginData)
-        tokenFromApi.then(function(token)  {
+        const userAuthFromApi = loginApi(loginData)
+        userAuthFromApi.then(function(userAuth)  {
 
-            if (token == null){
+            if (userAuth!.token == null){
                 setStateLogin(StateLogin.ErrorBack)
                 return
             }
             
-            if (token.length === 0) {
+            if (userAuth!.token.length === 0) {
                 setStateLogin(StateLogin.Failed)
                 return
             }
             setStateLogin(StateLogin.Success)
             
-            saveTokenInCookie(token)
+            saveTokenInCookie(userAuth!.token)
+            saveUserIdInCookie(userAuth!.id.toString())
             
             router.push({
                 pathname: '/dashboard',
-                query: { token: token }
+                query: { token: userAuth!.token }
             }, '/dashboard')
         })
     }

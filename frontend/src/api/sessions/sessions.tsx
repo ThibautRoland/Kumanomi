@@ -1,10 +1,10 @@
-import { loginRequest} from "@/interfaces/sessions"
+import { loginRequest, userAuth} from "@/interfaces/sessions"
 import { task } from "@/interfaces/tasks"
 
 const API_HOST = process.env.API_HOST
 const API_PORT = process.env.API_PORT
 
-export async function loginApi(loginData: loginRequest) : Promise<string | null> {
+export async function loginApi(loginData: loginRequest) : Promise<userAuth | null> {
 
     const url = `http://${API_HOST}:${API_PORT}/sessions/login`
 
@@ -15,10 +15,13 @@ export async function loginApi(loginData: loginRequest) : Promise<string | null>
             headers: {'Content-Type':'application/json'},
         })
         if (res.status == 200) {
-            return await res.json() as string
+            return await res.json() as userAuth
         }        
 
-        return ""
+        return {
+            token: "",
+            id: 0
+        }
     } catch (error){
         console.log("error from loginApi", error)
        return null 

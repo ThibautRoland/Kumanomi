@@ -3,3 +3,8 @@ export type loginRequest = {
     password: string
 }
 
+export type userAuth = {
+    token: string,
+    id: number
+}
+

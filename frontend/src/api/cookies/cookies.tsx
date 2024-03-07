@@ -6,6 +6,10 @@ export function saveTokenInCookie(token : string){
     Cookies.set('token', token);
 }
 
+export function saveUserIdInCookie(id : string){
+    Cookies.set('user_id', id);
+}
+
 export function getBearerToken() : string{
     const token = Cookies.get('token')
     if (typeof token === "string"){
@@ -14,7 +18,7 @@ export function getBearerToken() : string{
     return ""
 }
 
-export function getTokenFromContext(context: any) : string {
+export function getItemFromContext(context: any, item: string) : string {
     const allCookiesStr = context.req.headers.cookie as string
     const keyValuePairs: string[] = allCookiesStr.split('; ');
 
@@ -24,7 +28,7 @@ export function getTokenFromContext(context: any) : string {
       dataMap[key] = value;
     });
 
-    const tokenValue = dataMap['token'];
+    const itemValue = dataMap[item];
 
-    return tokenValue 
+    return itemValue 
 }
