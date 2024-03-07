@@ -1,33 +1,3 @@
-/*const Pool = require('pg').Pool
-require('dotenv').config()
-
-const pool = initPool()
-
-function login(email: string, password: string) {
-    const query: string = "SELECT * FROM users;"
-    let promise = new Promise(function(resolve, reject) {
-       const res = pool.query(query)
-       console.log(res)
-    //    resolve(res.result)
-    })
-}
-
-
-function initPool(){
-    const user = process.env.POSTGRES_USER || "thibaut"
-    const host = process.env.POSTGRES_HOST || "localhost"
-    const database=  process.env.POSTGRES_DB || "kumanomi"
-    const password= process.env.POSTGRES_PWD || "password"
-    const port= process.env.POSTGRES_PORT || 5432
-
-    return new Pool({
-        user: user ,
-        host: host,
-        database: database,
-        password: password,
-        port: port,
-    })
-}*/
 import { Pool, QueryResult } from 'pg';
 import dotenv from 'dotenv';
 
