@@ -10,7 +10,8 @@ services:
       POSTGRES_DB: kumanomi
     volumes:
       - pgsql-volume-container:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init-sql/init.sql:/docker-entrypoint-initdb.d/0init.sql
+      - ./init-sql/fill.sql:/docker-entrypoint-initdb.d/1fill.sql
     ports:
       - 5432:5432
     networks:

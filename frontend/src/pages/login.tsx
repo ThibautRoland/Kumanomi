@@ -1,6 +1,8 @@
+import { saveTokenInCookie, saveUserIdInCookie } from '@/api/cookies/cookies'
 import { loginApi } from '@/api/sessions/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
+import { useRouter } from 'next/router'
 
 enum StateLogin {
     WaitingForLogin ,
@@ -9,11 +11,14 @@ enum StateLogin {
     Success,
     ErrorBack
 }
-
+/*
+TODO separate WrongEmailFormat from StateLogin
+*/
 export default function Login() {
+    const router = useRouter()
 
-    const [getEmail, setEmail] = useState("")
-    const [getPassword, setPassword] = useState("")
+    const [getEmail, setEmail] = useState("gandalf@lotr.com")
+    const [getPassword, setPassword] = useState("password")
     const [getStateLogin, setStateLogin] = useState(StateLogin.WaitingForLogin)
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +37,6 @@ export default function Login() {
     }
 
     const login = () => {
-        //TODO check if the email is OK with regex
-        // TODO hidden password ******
         const loginData = {
             email: getEmail,
             password: getPassword
@@ -41,27 +44,30 @@ export default function Login() {
 
         if (!emailValidation(getEmail)) {
             setStateLogin(StateLogin.WrongEmailFormat)
-            console.log(getStateLogin)
             return
         }
 
-        const canConnect = loginApi(loginData)
-        canConnect.then(function(resBool)  {
-            console.log("bool from promise" + resBool)
-            if (resBool) {
-                setStateLogin(StateLogin.Success)
-                console.log(getStateLogin)
+        const userAuthFromApi = loginApi(loginData)
+        userAuthFromApi.then(function(userAuth)  {
+
+            if (userAuth!.token == null){
+                setStateLogin(StateLogin.ErrorBack)
                 return
             }
-            if (resBool === false ){
+            
+            if (userAuth!.token.length === 0) {
                 setStateLogin(StateLogin.Failed)
-                console.log(getStateLogin)
-                return 
+                return
             }
-            // no response from api
-            setStateLogin(StateLogin.ErrorBack)
-            console.log(getStateLogin)
-
+            setStateLogin(StateLogin.Success)
+            
+            saveTokenInCookie(userAuth!.token)
+            saveUserIdInCookie(userAuth!.id.toString())
+            
+            router.push({
+                pathname: '/dashboard',
+                query: { token: userAuth!.token }
+            }, '/dashboard')
         })
     }
 

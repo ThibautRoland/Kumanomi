@@ -1,9 +1,12 @@
 import { Router } from "express";
 import SessionsController from "../controllers/sessions.controller";
+import TasksController from "../controllers/tasks.controller";
+import { authenticateToken } from "../middleware/authenticateToken";
 
 class SessionRoutes {
   router = Router();
-  controller = new SessionsController();
+  sessionsController = new SessionsController();
+  tasksController = new TasksController();
 
   constructor() {
     this.intializeRoutes();
@@ -11,9 +14,9 @@ class SessionRoutes {
 
   intializeRoutes() {
     // Create a new Tutorial
-    this.router.post("/login", this.controller.login);
+    this.router.post("/login", this.sessionsController.login);
    // this.router.post("/", this.controller.create);
-
+    this.router.get('/tasks', authenticateToken, this.tasksController.tasks);
     // Retrieve all Tutorials
     //this.router.get("/", this.controller.findAll);
 

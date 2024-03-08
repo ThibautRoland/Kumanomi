@@ -18,13 +18,13 @@ export default class SessionsController {
     }
 
     try {
-      const token = await sessionsLogic.isExist(body);
+      const userAuth = await sessionsLogic.isExist(body);
 
       // is empty
-      if (token.length === 0) {
+      if (userAuth.token.length === 0) {
         return res.status(404).json("user not found")  
       }
-      return res.status(200).json(token)
+      return res.status(200).json(userAuth)
 
     } catch (error) {
         return res.status(522).json("big error "+error)
