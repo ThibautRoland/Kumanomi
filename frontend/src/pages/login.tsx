@@ -17,7 +17,7 @@ TODO separate WrongEmailFormat from StateLogin
 export default function Login() {
     const router = useRouter()
 
-    const [getEmail, setEmail] = useState("radagastf@lotr.com")
+    const [getEmail, setEmail] = useState("gandalf@lotr.com")
     const [getPassword, setPassword] = useState("password")
     const [getStateLogin, setStateLogin] = useState(StateLogin.WaitingForLogin)
 

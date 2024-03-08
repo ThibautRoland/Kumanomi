@@ -9,6 +9,7 @@ import { Layout } from '@/components/layout';
 import { getAllProjectsFromApi } from '@/api/projects';
 import { projectType } from '@/interfaces/projects';
 import { ProjectCard } from '@/components/projectCard';
+import Link from 'next/link';
 
 type IndexProps = {
   tasks: task[],
@@ -26,7 +27,9 @@ export default function Dashboard({tasks, user_id, projects}: IndexProps) {
         <h2>Welcome user_id: {user_id}</h2>
         {projects.map((project, i) => (
           <div key={i} className='p-4 my-4'>
-            <ProjectCard project={project}/>
+            <Link href={`/project/${project.id}`}>
+              <ProjectCard project={project}/>
+            </Link>
           </div>
         ))}
         

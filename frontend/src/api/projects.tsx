@@ -25,3 +25,19 @@ export async function getAllProjectsFromApi(token: string) : Promise<projectType
        return null 
     }
 }
+
+export async function getProjectByID(projectID: number ,token: string) : Promise<Response | null> {
+
+    const url = `http://${API_HOST}:${API_PORT}/projects/${projectID}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+        })
+        return res   
+    } catch (error){
+        console.log("getProjectByID -> ",error)
+       return null 
+    }
+}
