@@ -22,13 +22,15 @@ export default class TasksController {
       ])  
   }
 
-  // async getAllTasks(req: Request, res: Response) {
-  //   try {
-  //     const tasks = await tasksLogic.getAllTasks()
-  //     return res.status(200).json(tasks)
-  //   } catch (error) {
-  //     return res.status(500).json({ error: 'error => '+error });
-  //   }
+  async getProjectTasks(req: Request, res: Response) {
+    const projectId = req.params.projectId;
+
+    try {
+      const tasks = await tasksLogic.getProjectTasks(projectId)
+      return res.status(200).json(tasks)
+    } catch (error) {
+      return res.status(500).json({ error: 'error => '+error });
+    }
   
-  // }
+  }
 }

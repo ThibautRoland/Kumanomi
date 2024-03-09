@@ -32,7 +32,7 @@ class ProjectsRepository {
         const query = {
           text: sql,
           values: values
-      };
+        };
         return new Promise((resolve, reject) => {
             this.pool.query(query, (error: Error, result: QueryResult) => {
                 if (error) {
