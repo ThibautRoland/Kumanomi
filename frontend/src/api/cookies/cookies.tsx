@@ -10,6 +10,10 @@ export function saveUserIdInCookie(id : string){
     Cookies.set('user_id', id);
 }
 
+export function saveUserProfilImgInCookie(profilImg : string){
+    Cookies.set('profil_img', profilImg);
+}
+
 export function getBearerToken() : string{
     const token = Cookies.get('token')
     if (typeof token === "string"){
