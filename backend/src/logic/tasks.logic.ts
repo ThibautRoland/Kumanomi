@@ -8,7 +8,7 @@ function getProjectTasks(projectId: number): Promise<any> {
             if (tasks.rows.length < 0) {
                 resolve(null)
             }
-            resolve(tasks)
+            resolve(tasks.rows)
         } catch (error) {
             reject(error)
         }
