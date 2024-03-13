@@ -1,6 +1,6 @@
 
 import { tasksRequest } from '@/interfaces/tasks';
-import { getProtectedEndpoint, getTasksApi } from '@/api/sessions/sessions';
+import { getProtectedEndpoint, getTasksApi } from '@/api/sessions';
 import { getBearerToken, getItemFromContext } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';

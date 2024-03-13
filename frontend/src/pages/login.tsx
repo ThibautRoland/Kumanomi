@@ -1,5 +1,5 @@
 import { saveTokenInCookie, saveUserIdInCookie, saveUserProfilImgInCookie } from '@/api/cookies/cookies'
-import { loginApi } from '@/api/sessions/sessions'
+import { loginApi } from '@/api/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
 import { useRouter } from 'next/router'
