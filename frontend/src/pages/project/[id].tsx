@@ -6,21 +6,30 @@ import { task } from '@/interfaces/tasks';
 import { Layout } from '@/components/layout';
 import { getProjectByID } from '@/api/projects';
 import { projectType } from '@/interfaces/projects';
+import { getProjectTasksFromApi } from '@/api/tasks';
+import { TaskCard } from '@/components/taskCard';
 
-type ProjectProps = {
-  project: projectType
+type Props = {
+  project: projectType,
+  tasks: task[] | null
 }
 
-export default function Project({project}: ProjectProps) {
+export default function Project({project, tasks}: Props) {
     const router = useRouter();
     const { id } = router.query;
 
     return (<Layout>
           <h1 className="text-center font-bold text-3xl py-5">Project</h1>          
-            <p> id : {project.id}</p>
-            <p> name : {project.name}</p>
-            <p> description : {project.description}</p>           
-            <p> userAdminID : {project.user_admin_id}</p>
+          <p> id : {project.id}</p>
+          <p> name : {project.name}</p>
+          <p> description : {project.description}</p>           
+          <p> userAdminID : {project.user_admin_id}</p>
+
+          {tasks?.map((task, i) => (
+            <div key={i} className='m-4 p-4'>
+              <TaskCard task={task} />
+            </div>
+          ))}
         </Layout>
     );
   }
@@ -59,11 +68,18 @@ export default function Project({project}: ProjectProps) {
     }
 
     const project = await res.json() as Response
-    console.log(project)
+    
+    const tasksRes = await getProjectTasksFromApi(id, tokenValue)
+    if (tasksRes === null || tasksRes.status !== 200) {
+      const tasks = null
+    }
+
+    const tasks = await tasksRes?.json()
 
         return {
           props: {
-            project : project
+            project : project,
+            tasks: tasks
           }
         }
 
