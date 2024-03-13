@@ -5,6 +5,7 @@ export type loginRequest = {
 
 export type userAuth = {
     token: string,
-    id: number
+    id: number,
+    profilImg: string
 }
 

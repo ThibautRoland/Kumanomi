@@ -21,7 +21,8 @@ export async function loginApi(loginData: loginRequest) : Promise<userAuth | nul
 
         return {
             token: "",
-            id: 0
+            id: 0,
+            profilImg: ""
         }
     } catch (error){
         console.log("error from loginApi", error)

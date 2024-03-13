@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken';
 
 type userAuth = {
     token: string,
-    id: number
+    id: number,
+    profilImg: string
 }
 
 // https://www.codecademy.com/resources/docs/typescript/promises
@@ -19,14 +20,16 @@ function isExist(req: RequestLogin): Promise<userAuth> {
             if (value.rows.length<1) {
                 resolve({
                     token: "",
-                    id: 0
+                    id: 0,
+                    profilImg: ""
                 })
             }
             const res = value.rows[0]
             const newAuthToken =  createJwtToken(req.email, res.id)
             resolve({
                 token: newAuthToken,
-                id: res.id as number
+                id: res.id as number,
+                profilImg: res.profil_img
             })
             
         } catch (error){
