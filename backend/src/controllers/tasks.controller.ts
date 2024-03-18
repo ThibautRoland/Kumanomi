@@ -1,26 +1,8 @@
 import { Request, Response } from "express";
-import { RequestLogin } from "../interfaces/RequestLogin";
+import { RequestLogin } from "../models/types/RequestLogin";
 const tasksLogic = require('../logic/tasks.logic');
 
 export default class TasksController {
-
-  async tasks(req: Request, res: Response) {
-
-      return res.status(200).json( [
-        {
-          id : 1,
-          name : "task 1"
-        },
-        {
-          id : 2,
-          name : "task 2"
-        },
-        {
-          id : 3,
-          name : "task 3"
-        }
-      ])  
-  }
 
   async getProjectTasks(req: Request, res: Response) {
     const projectId = req.params.projectId;
@@ -32,5 +14,17 @@ export default class TasksController {
       return res.status(500).json({ error: 'error => '+error });
     }
   
+  }
+
+  async createTask(req: Request, res: Response) {
+    const projectId = req.params.projectId;
+    const body = req.body;
+
+    try {
+      const taskId = await tasksLogic.createTask(body, projectId)
+      return res.status(201).json({ taskId: taskId })
+    } catch (error) {
+      return res.status(500).json({ error: error})
+    }
   }
 }

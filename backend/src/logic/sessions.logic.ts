@@ -1,5 +1,5 @@
 
-import { RequestLogin } from "../interfaces/RequestLogin";
+import { RequestLogin } from "../models/types/RequestLogin";
 import sessionsRepo from "../repositories/sessions.repository";
 import jwt from 'jsonwebtoken';
 

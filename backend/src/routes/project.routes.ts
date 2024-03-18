@@ -16,6 +16,7 @@ class ProjectRoutes {
       this.router.get("/", this.projectsController.getAllProjects);
       this.router.get("/:projectId", authenticateToken, this.projectsController.getProjectById); 
       this.router.get("/:projectId/tasks", authenticateToken, this.tasksController.getProjectTasks);
+      this.router.post("/:projectId/new-task", authenticateToken, this.tasksController.createTask);
     }
   }
   

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { RequestLogin } from "../interfaces/RequestLogin";
+import { RequestLogin } from "../models/types/RequestLogin";
 const sessionsLogic = require('../logic/sessions.logic');
 
 export default class SessionsController {

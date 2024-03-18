@@ -1,4 +1,4 @@
-import { task } from "../interfaces/Task";
+import { task } from "../models/types/Task";
 import tasksRepo from "../repositories/tasks.repository";
 
 function getProjectTasks(projectId: number): Promise<any> {
@@ -15,6 +15,18 @@ function getProjectTasks(projectId: number): Promise<any> {
     })
 }
 
+function createTask(projectId: number, body: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const taskId = await tasksRepo.createTask(projectId, body)
+            resolve(taskId)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
-    getProjectTasks
+    getProjectTasks,
+    createTask
 }
