@@ -15,11 +15,15 @@ function getProjectTasks(projectId: number): Promise<any> {
     })
 }
 
-function createTask(projectId: number, body: any): Promise<any> {
+function createTask(projectId: number, body: any): Promise<number> {
     return new Promise(async (resolve, reject) => {
         try {
             const taskId = await tasksRepo.createTask(projectId, body)
-            resolve(taskId)
+            if (taskId.rowCount !== 1) {
+                console.log("should had one id returned from saving but got "+ taskId.rowCount)
+                resolve(-1)
+            }
+            resolve(taskId.rows[0].id)
         } catch (error) {
             reject(error)
         }

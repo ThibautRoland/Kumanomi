@@ -21,7 +21,7 @@ export default class TasksController {
     const body = req.body;
 
     try {
-      const taskId = await tasksLogic.createTask(body, projectId)
+      const taskId = await tasksLogic.createTask(projectId, body)
       return res.status(201).json({ taskId: taskId })
     } catch (error) {
       return res.status(500).json({ error: error})

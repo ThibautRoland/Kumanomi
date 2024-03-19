@@ -20,7 +20,7 @@ function isExist(req: RequestLogin): Promise<userAuth> {
             if (value.rows.length<1) {
                 resolve({
                     token: "",
-                    id: 0,
+                    id: -1,
                     profilImg: ""
                 })
             }

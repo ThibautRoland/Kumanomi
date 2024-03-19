@@ -37,8 +37,10 @@ class TasksRepository {
     }
 
     createTask(projectId: number, body: any): Promise<QueryResult> {
-        const query = 'INSERT INTO tasks (description, deadline, project_id, status_id, priority, project_member_id) VALUES ($1, $2, $3, $4, $5, $6), RETURNING id';
+        const query = 'INSERT INTO tasks (description, deadline, project_id, status_id, priority, project_member_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;';
         const values = [body.description, body.deadline, projectId, 1, body.priority, null]
+
+        console.log(query, "values are -> ", values)
 
         return new Promise((resolve, reject) => {
             this.pool.query(query, values, (error: Error, result: QueryResult) => {
