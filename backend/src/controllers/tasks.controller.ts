@@ -27,4 +27,15 @@ export default class TasksController {
       return res.status(500).json({ error: error})
     }
   }
+
+  async deleteTask(req: Request, res: Response) {
+    const taskId = req.params.taskId;
+
+    try {
+      await tasksLogic.deleteTask(taskId)
+      return res.status(204).json({ message: `task with id ${taskId} has been successfully deleted` })
+    } catch (error) {
+      return res.status(500).json({ error: error})
+    }
+  }
 }

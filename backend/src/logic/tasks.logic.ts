@@ -30,7 +30,19 @@ function createTask(projectId: number, body: any): Promise<number> {
     })
 }
 
+function deleteTask(taskId: number): Promise<string> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await tasksRepo.deleteTask(taskId)
+            resolve(`task with id ${taskId} has been successfully deleted`)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     getProjectTasks,
-    createTask
+    createTask,
+    deleteTask
 }

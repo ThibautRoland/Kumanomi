@@ -52,6 +52,19 @@ class TasksRepository {
         })
     }
 
+    deleteTask(taskId: number): Promise<QueryResult> {
+        const query = "DELETE FROM tasks WHERE id = ($1);"
+        
+        return new Promise((resolve, reject) => {
+            this.pool.query(query, [taskId], (error: Error, result: QueryResult) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(result)
+            })
+        })
+    }
+
 }
 
 export default new TasksRepository();

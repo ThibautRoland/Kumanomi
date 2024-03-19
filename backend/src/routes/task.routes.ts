@@ -11,7 +11,7 @@ class TaskRoutes {
     }
   
     intializeRoutes() {
-      this.router.get("/:projectId", authenticateToken, this.tasksController.getProjectTasks);   
+      this.router.delete("/:taskId", authenticateToken, this.tasksController.deleteTask);   
     }
   }
   
