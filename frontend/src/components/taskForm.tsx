@@ -59,7 +59,6 @@ export const TaskForm = ({projectId, token}: Props) => {
             <input placeholder="yyyy-mm-dd format" onChange={(event) => handleTaskData(event, "deadline")} type="text" className="slate-input p-2 mb-2"/>
             <p>What is the task's priority level ?</p>
             <input placeholder="1-5" onChange={(event) => handleTaskData(event, "priority")} type="text" className="slate-input p-2 mb-2"/>
-            <p className="text-center">Coordinates</p>
             <div className="flex justify-center mt-2">
                 <button className='mb-3 border rounded-lg w-1/2 p-2 hover:bg-slate-100' onClick={handleClick}>Submit</button>
             </div>

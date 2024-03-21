@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { RequestLogin } from "../models/types/RequestLogin";
+import { createTask } from "../models/types/Task";
 const tasksLogic = require('../logic/tasks.logic');
 
 export default class TasksController {
@@ -18,7 +19,11 @@ export default class TasksController {
 
   async createTask(req: Request, res: Response) {
     const projectId = req.params.projectId;
-    const body = req.body;
+    const body = req.body as createTask;
+
+    if (body.deadline === null || body.priority === null || body.description === null || body.description === "") {
+      return res.status(422).json("error -> wrong data type or null value in the body")
+    }
 
     try {
       const taskId = await tasksLogic.createTask(projectId, body)
