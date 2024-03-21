@@ -14,3 +14,9 @@ export type tasksRequest = {
     id: number,
     token: string
 }
+
+export type createTask = {
+    description: string,
+    deadline: Date,
+    priority: number
+}

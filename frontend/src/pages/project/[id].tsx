@@ -8,15 +8,24 @@ import { getProjectByID } from '@/api/projects';
 import { projectType } from '@/interfaces/projects';
 import { getProjectTasksFromApi } from '@/api/tasks';
 import { TaskCard } from '@/components/taskCard';
+import { TaskForm } from '@/components/taskForm';
 
 type Props = {
   project: projectType,
-  tasks: task[] | null
+  tasks: task[] | null,
+  token: string
 }
 
-export default function Project({project, tasks}: Props) {
+export default function Project({project, tasks, token}: Props) {
+
+    const [taskFormDisplay, setTaskFormDisplay] = useState(false)
+
     const router = useRouter();
     const { id } = router.query;
+
+    const handleClick = () => {
+      setTaskFormDisplay(!taskFormDisplay)
+    }
 
     return (<Layout>
           <h1 className="text-center font-bold text-3xl py-5">Project</h1>          
@@ -24,6 +33,12 @@ export default function Project({project, tasks}: Props) {
           <p> name : {project.name}</p>
           <p> description : {project.description}</p>           
           <p> userAdminID : {project.user_admin_id}</p>
+
+          <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
+
+          <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
+            <TaskForm projectId={project.id} token={token} />
+          </div>
 
           {tasks?.map((task, i) => (
             <div key={i} className='m-4 p-4'>
@@ -79,7 +94,8 @@ export default function Project({project, tasks}: Props) {
         return {
           props: {
             project : project,
-            tasks: tasks
+            tasks: tasks,
+            token: tokenValue
           }
         }
 

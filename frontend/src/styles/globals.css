@@ -7,3 +7,9 @@
         @apply bg-kum-cream
     }
 }
+
+@layer components {
+    .slate-input {
+        @apply bg-slate-200 rounded focus:outline-none;
+        }
+}

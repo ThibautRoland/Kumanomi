@@ -19,7 +19,7 @@ VALUES
 INSERT INTO roles (role) VALUES
   ('viewer'),
   ('contributor'),
-  ('admin');
+  ('manager');
 
 INSERT INTO project_members (project_id, user_id, role_id) VALUES
   -- project ring quest
