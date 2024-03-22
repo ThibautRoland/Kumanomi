@@ -1,13 +1,15 @@
 import { createProjectTask } from "@/api/tasks"
+import { ProjectMember } from "@/interfaces/projectMember"
 import Link from "next/link"
 import { useState } from "react"
 
 type Props = {
     projectId: number,
-    token: string
+    token: string,
+    projectMember: ProjectMember
 }
 
-export const TaskForm = ({projectId, token}: Props) => {
+export const TaskForm = ({projectId, token, projectMember}: Props) => {
     const [task, setTask] = useState({
         description: "",
         deadline: new Date("0001-01-01"),
@@ -35,7 +37,7 @@ export const TaskForm = ({projectId, token}: Props) => {
 
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         console.log(task);
-        const res = createProjectTask(projectId, token, task);
+        const res = createProjectTask(projectId, token, task, projectMember.role);
         res.then(
             function(value) {if (value) {
                     alert("task successfully added")

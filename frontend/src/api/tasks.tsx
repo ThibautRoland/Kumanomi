@@ -19,14 +19,18 @@ export async function getProjectTasksFromApi(projectID: number, token: string) :
     }
 }
 
-export async function createProjectTask(projectID: number, token: string, task: createTask) : Promise<boolean> {
+export async function createProjectTask(projectID: number, token: string, task: createTask, role: string) : Promise<boolean> {
 
     const url = `http://${API_HOST}:${API_PORT}/projects/${projectID}/new-task`
 
     try {
         const res = await fetch(url, {
             method: 'POST',
-            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+            headers: {
+                'Content-Type':'application/json', 
+                'Authorization': `Bearer ${token}`,
+                'role': role
+            },
             body: JSON.stringify(task)
         })
         return res.status === 201   

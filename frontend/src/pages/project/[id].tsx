@@ -9,14 +9,17 @@ import { projectType } from '@/interfaces/projects';
 import { getProjectTasksFromApi } from '@/api/tasks';
 import { TaskCard } from '@/components/taskCard';
 import { TaskForm } from '@/components/taskForm';
+import { getProjectMemberFromApi } from '@/api/projectMembers';
+import { ProjectMember } from '@/interfaces/projectMember';
 
 type Props = {
   project: projectType,
   tasks: task[] | null,
-  token: string
+  token: string,
+  projectMember: ProjectMember
 }
 
-export default function Project({project, tasks, token}: Props) {
+export default function Project({project, tasks, token, projectMember}: Props) {
 
     const [taskFormDisplay, setTaskFormDisplay] = useState(false)
 
@@ -37,7 +40,7 @@ export default function Project({project, tasks, token}: Props) {
           <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
 
           <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
-            <TaskForm projectId={project.id} token={token} />
+            <TaskForm projectId={project.id} token={token} projectMember={projectMember} />
           </div>
 
           {tasks?.map((task, i) => (
@@ -50,7 +53,6 @@ export default function Project({project, tasks, token}: Props) {
   }
 
   export async function getServerSideProps(context : any) {
-    console.log(context.params.id)
     const id = context.params.id
     // const id = context.query.id
     // if(!context.query.id){
@@ -89,13 +91,26 @@ export default function Project({project, tasks, token}: Props) {
       const tasks = null
     }
 
+    const userId = getItemFromContext(context, "user_id");
+    console.log("userid from mtn", userId)
+
+    const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
+    if(projectMemberRes === null || projectMemberRes.status !== 200) {
+      const projectMember = null
+    }
+
+    const projectMember = await projectMemberRes!.json()
+
+    console.log("projectmember from mtn", projectMember)
+
     const tasks = await tasksRes?.json()
 
         return {
           props: {
             project : project,
             tasks: tasks,
-            token: tokenValue
+            token: tokenValue,
+            projectMember: projectMember
           }
         }
 
