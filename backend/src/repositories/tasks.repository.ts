@@ -66,6 +66,19 @@ class TasksRepository {
         })
     }
 
+    patchTaskStatus(taskId: number, body: {status_id: number}): Promise<QueryResult> {
+        const query = "UPDATE tasks SET status_id = ($1) WHERE id = ($2);"
+        const values = [body.status_id, taskId]
+        
+        return new Promise((resolve, reject) => {
+            this.pool.query(query, values, (error: Error, result: QueryResult) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(result)
+            })
+        })
+    }
 }
 
 export default new TasksRepository();

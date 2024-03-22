@@ -41,8 +41,21 @@ function deleteTask(taskId: number): Promise<string> {
     })
 }
 
+function patchTaskStatus(taskId: number, body: {status_id: number}): Promise<{status: string}> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await tasksRepo.patchTaskStatus(taskId, body)
+            const patchedTask = result.rows[0]
+            resolve({status: patchedTask.status})
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     getProjectTasks,
     createTask,
-    deleteTask
+    deleteTask,
+    patchTaskStatus
 }

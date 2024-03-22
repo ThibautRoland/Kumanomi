@@ -43,4 +43,20 @@ export default class TasksController {
       return res.status(500).json({ error: error})
     }
   }
+
+  async patchTaskStatus(req: Request, res: Response) {
+    const taskId = req.params.taskId;
+    const body = req.body
+
+    try {
+      const patchedTask = await tasksLogic.patchTaskStatus(taskId, body)
+      return res.status(200).json({ 
+        message: `task with id ${taskId} has been successfully patched`,
+        id: taskId,
+        status: patchedTask.status
+      })
+    } catch (error) {
+      return res.status(500).json({ error: error})
+    }
+  }
 }
