@@ -37,11 +37,15 @@ export default function Project({project, tasks, token, projectMember}: Props) {
           <p> description : {project.description}</p>           
           <p> userAdminID : {project.user_admin_id}</p>
 
-          <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
+          {projectMember.role === "manager" && 
+            <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
+          }
+          {projectMember.role === "manager" && 
+            <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
+              <TaskForm projectId={project.id} token={token} projectMember={projectMember} />
+            </div>
+          }
 
-          <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
-            <TaskForm projectId={project.id} token={token} projectMember={projectMember} />
-          </div>
 
           {tasks?.map((task, i) => (
             <div key={i} className='m-4 p-4'>
