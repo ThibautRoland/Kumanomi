@@ -21,26 +21,66 @@ type IndexProps = {
 
 export default function Dashboard({tasks, user_id,profil_img, projects}: IndexProps) {
   const router = useRouter();
-  const [tokenState, setTokenState] = useState("")
+  const [tabNumber, setTabNumber] = useState(1)
+
+    const handleClick = (event: React.MouseEvent<HTMLLIElement>, i: number) => {
+      setTabNumber(i);
+    }
 
     return (<Layout>
-      <div className='px-10'>
-        <h1 className="text-center font-bold text-3xl py-5">Dashboard</h1>
-        <div className='flex justify-around'>
-        <h2>Welcome user_id: {user_id}</h2>
-        <UserProfil id={user_id} profilImg={profil_img} />
-        </div>
-        
-        {projects.map((project, i) => (
-          <div key={i} className='p-4 my-4'>
-            <Link href={`/project/${project.id}`}>
-              <ProjectCard project={project}/>
-            </Link>
-          </div>
-        ))}
-        
+  <div className='px-10'>
+    <h1 className="text-center font-bold text-3xl py-5">Dashboard</h1>
+    <div className='flex justify-around'>
+      <h2>Welcome user_id: {user_id}</h2>
+      <UserProfil id={user_id} profilImg={profil_img} />
+    </div>
+
+    <div className="flex flex-row">
+
+      <div className="basis-1/6"></div>
+
+      <div className="basis-4/6">
+        <ul className="flex text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+          <li className="me-2" onClick={(event) => handleClick(event, 1)}>
+            <a href="#" aria-current="page" className={`${tabNumber === 1 ? 'tib-tab-active' : 'tib-tab-sleep'}`}>
+              Project List
+            </a>
+          </li>
+          <li className="me-2" onClick={(event) => handleClick(event, 2)}>
+            <a href="#" className={`${tabNumber === 2 ? 'tib-tab-active' : 'tib-tab-sleep'}`}>
+              My tasks
+            </a>
+          </li>
+          <li className="me-2" onClick={(event) => handleClick(event, 3)}>
+            <a href="#" className={`${tabNumber === 3 ? 'tib-tab-active' : 'tib-tab-sleep'}`}>
+              Something else
+            </a>
+          </li>
+          <li className="ml-auto" onClick={(event) => handleClick(event, 4)}>
+            <a href="#" className={`${tabNumber === 4 ? 'tib-tab-active' : 'tib-tab-sleep'}`}>
+              Something else
+            </a>
+          </li>
+        </ul>
       </div>
-        </Layout>
+      
+      <div className="basis-1/6 flex justify-center items-center">
+        {/* <Link href="./create"><button className="border p-3 rounded-lg hover:bg-slate-100">Add a doctor</button></Link> */}
+      </div>
+    </div>
+          
+    <div className={`${tabNumber === 1 ? '' : "hidden"}`}>
+      {projects.map((project, i) => (
+        <div key={i} className='p-4 my-4'>
+          <Link href={`/project/${project.id}`}>
+            <ProjectCard project={project}/>
+          </Link>
+        </div>
+      ))}
+    </div>
+  
+  </div>
+</Layout>
     );
   }
 

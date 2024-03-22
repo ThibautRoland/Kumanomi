@@ -11,6 +11,7 @@ import { TaskCard } from '@/components/taskCard';
 import { TaskForm } from '@/components/taskForm';
 import { getProjectMemberFromApi } from '@/api/projectMembers';
 import { ProjectMember } from '@/interfaces/projectMember';
+import Link from 'next/link';
 
 type Props = {
   project: projectType,
@@ -36,6 +37,7 @@ export default function Project({project, tasks, token, projectMember}: Props) {
           <p> name : {project.name}</p>
           <p> description : {project.description}</p>           
           <p> userAdminID : {project.user_admin_id}</p>
+          <Link href="/dashboard">back to dashboard</Link>
 
           {projectMember.role === "manager" && 
             <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
