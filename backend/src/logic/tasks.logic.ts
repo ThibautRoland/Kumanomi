@@ -41,12 +41,12 @@ function deleteTask(taskId: number): Promise<string> {
     })
 }
 
-function patchTaskStatus(taskId: number, body: {status_id: number}): Promise<{status: string}> {
+function patchTaskStatus(taskId: number, body: {status_id: number}): Promise<{status_id: number}> {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await tasksRepo.patchTaskStatus(taskId, body)
             const patchedTask = result.rows[0]
-            resolve({status: patchedTask.status})
+            resolve({status_id: patchedTask.status_id})
         } catch (error) {
             reject(error)
         }

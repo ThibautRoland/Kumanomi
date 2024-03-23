@@ -67,7 +67,7 @@ class TasksRepository {
     }
 
     patchTaskStatus(taskId: number, body: {status_id: number}): Promise<QueryResult> {
-        const query = "UPDATE tasks SET status_id = ($1) WHERE id = ($2);"
+        const query = "UPDATE tasks SET status_id = ($1) WHERE id = ($2) RETURNING status_id;"
         const values = [body.status_id, taskId]
         
         return new Promise((resolve, reject) => {
