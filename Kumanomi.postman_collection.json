@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "bcbfe792-6ab1-4ce2-92eb-60a8cecfb739",
+		"name": "Kumanomi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32994966"
+	},
+	"item": [
+		{
+			"name": "sessions/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"var token = jsonData.token;\r",
+							"pm.environment.set(\"authToken\",token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"gandalf@lotr.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sessions/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sessions",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new task as Manager",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Creation of Task Test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Role",
+						"value": "manager",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"a new wonderfull task !\",\r\n    \"deadline\": \"2024-04-15T12:00:00.000Z\",\r\n    \"priority\": 3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/projects/1/new-task",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"1",
+						"new-task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new task as Reader",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Not a manager\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Role",
+						"value": "reader",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"a new wonderfull task !\",\r\n    \"deadline\": \"2024-04-15T12:00:00.000Z\",\r\n    \"priority\": 3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/projects/1/new-task",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"1",
+						"new-task"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
