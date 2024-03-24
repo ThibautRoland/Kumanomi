@@ -14,7 +14,7 @@ export default class TasksController {
     } catch (error) {
       return res.status(500).json({ error: 'error => '+error });
     }
-  
+
   }
 
   async createTask(req: Request, res: Response) {
@@ -37,8 +37,13 @@ export default class TasksController {
     const taskId = req.params.taskId;
 
     try {
-      await tasksLogic.deleteTask(taskId)
-      return res.status(204).json({ message: `task with id ${taskId} has been successfully deleted` })
+      const taskSucessfulyDeleted = await tasksLogic.deleteTask(taskId)
+
+      if (!taskSucessfulyDeleted){
+        return res.status(404).json(`task with id ${taskId} was not found`)
+      }
+
+      return res.sendStatus(204)
     } catch (error) {
       return res.status(500).json({ error: error})
     }
@@ -50,7 +55,7 @@ export default class TasksController {
 
     try {
       const patchedTask = await tasksLogic.patchTaskStatus(taskId, body)
-      return res.status(200).json({ 
+      return res.status(200).json({
         message: `task with id ${taskId} has been successfully patched`,
         id: taskId,
         status_id: patchedTask.status_id
