@@ -30,11 +30,16 @@ function createTask(projectId: number, body: createTask): Promise<number> {
     })
 }
 
-function deleteTask(taskId: number): Promise<string> {
+function deleteTask(taskId: number): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         try {
-            await tasksRepo.deleteTask(taskId)
-            resolve(`task with id ${taskId} has been successfully deleted`)
+            const res = await tasksRepo.deleteTask(taskId)
+            // nothing deleted
+            if (res.rowCount != 1) {
+                resolve(false)
+            }
+
+            resolve(true)
         } catch (error) {
             reject(error)
         }
