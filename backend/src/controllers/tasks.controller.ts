@@ -64,4 +64,19 @@ export default class TasksController {
       return res.status(500).json({ error: error})
     }
   }
+
+  async getUserTasks(req: Request, res: Response) {
+    const userId = req.params.userId;
+
+    try {
+      const tasks = await tasksLogic.getUserTasks(userId)
+      if (tasks.length < 1) {
+        return res.status(404).json(`no task is attributed to userId ${userId}`)
+      }
+      return res.status(200).json(tasks)
+    } catch (error) {
+      return res.status(500).json({ error: 'error => '+error });
+    }
+
+  }
 }

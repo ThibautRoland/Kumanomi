@@ -1,4 +1,4 @@
-import { createTask, task } from "../models/types/Task";
+import { createTask, task, userTask } from "../models/types/Task";
 import tasksRepo from "../repositories/tasks.repository";
 
 function getProjectTasks(projectId: number): Promise<any> {
@@ -58,9 +58,24 @@ function patchTaskStatus(taskId: number, body: {status_id: number}): Promise<{st
     })
 }
 
+function getUserTasks(userId: number): Promise<userTask[] | null> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const tasks = await tasksRepo.getUserTasks(userId)
+            if (tasks.rows.length < 0) {
+                resolve(null)
+            }
+            resolve(tasks.rows)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     getProjectTasks,
     createTask,
     deleteTask,
-    patchTaskStatus
+    patchTaskStatus,
+    getUserTasks
 }

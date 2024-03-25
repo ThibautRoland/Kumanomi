@@ -79,6 +79,33 @@ class TasksRepository {
             })
         })
     }
+
+    getUserTasks(userId: number): Promise<QueryResult> {
+        const sql = "SELECT tasks.description, tasks.deadline, tasks.priority, projects.name as projectname, tasks.project_id as projectId, task_status.status \
+        FROM tasks \
+        LEFT JOIN projects ON projects.id = tasks.project_id \
+        LEFT JOIN task_status ON tasks.status_id = task_status.id \
+        LEFT JOIN project_members ON tasks.project_member_id = project_members.id \
+        LEFT JOIN users ON project_members.user_id = users.id \
+        WHERE users.id = ($1);"
+
+        const values = [userId]
+        
+        const query = {
+            text: sql,
+            values: values
+        }
+
+        return new Promise((resolve, reject) => {
+            this.pool.query(query, (error: Error, result: QueryResult) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(result) 
+            })
+        })
+
+    }
 }
 
 export default new TasksRepository();

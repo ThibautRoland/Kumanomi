@@ -12,7 +12,8 @@ class TaskRoutes {
   
     intializeRoutes() {
       this.router.delete("/:taskId", authenticateToken, this.tasksController.deleteTask)
-      this.router.patch("/:taskId", authenticateToken, this.tasksController.patchTaskStatus)   
+      this.router.patch("/:taskId", authenticateToken, this.tasksController.patchTaskStatus)
+      this.router.get("/user/:userId", authenticateToken, this.tasksController.getUserTasks)   
     }
   }
   
