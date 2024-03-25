@@ -10,6 +10,9 @@ export default class TasksController {
 
     try {
       const tasks = await tasksLogic.getProjectTasks(projectId)
+      if (tasks.length < 1) {
+        return res.status(404).json(`the project with projectId ${projectId} either has no task or doesn't exist in the database`)
+      }
       return res.status(200).json(tasks)
     } catch (error) {
       return res.status(500).json({ error: 'error => '+error });
