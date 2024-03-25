@@ -20,3 +20,12 @@ export type createTask = {
     deadline: Date,
     priority: number
 }
+
+export type userTask = {
+    description: string,
+    deadline: Date,
+    priority: number,
+    projectName: string,
+    projectId: number,
+    status: string
+}

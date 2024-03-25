@@ -1,6 +1,6 @@
 
-import { tasksRequest } from '@/interfaces/tasks';
-import { getProtectedEndpoint, getTasksApi } from '@/api/sessions';
+import { tasksRequest, userTask } from '@/interfaces/tasks';
+import { getProtectedEndpoint } from '@/api/sessions';
 import { getBearerToken, getItemFromContext } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
@@ -11,9 +11,11 @@ import { projectType } from '@/interfaces/projects';
 import { ProjectCard } from '@/components/projectCard';
 import Link from 'next/link';
 import { UserProfil } from '@/components/UserProfil';
+import { getUserTasksFromApi } from '@/api/tasks';
+import { UserTasksList } from '@/components/userTasksList';
 
 type IndexProps = {
-  tasks: task[],
+  tasks: userTask[],
   user_id: number,
   profil_img: string,
   projects: projectType[]
@@ -78,6 +80,10 @@ export default function Dashboard({tasks, user_id,profil_img, projects}: IndexPr
         </div>
       ))}
     </div>
+
+    <div className={`${tabNumber === 2 ? '' : "hidden"}`}>
+      <UserTasksList tasks={tasks} />
+    </div>
   
   </div>
 </Layout>
@@ -93,9 +99,9 @@ export default function Dashboard({tasks, user_id,profil_img, projects}: IndexPr
     const tokenValue = getItemFromContext(context, 'token')
     const userIdValue = getItemFromContext(context, 'user_id')
     const profilImgValue = getItemFromContext(context, 'profil_img')
-    console.log("from cookie context --> ", userIdValue)
-    const tasks = await getTasksApi(tokenValue)
+    const tasks = await getUserTasksFromApi(parseInt(userIdValue, 10), tokenValue)
     const projects = await getAllProjectsFromApi(tokenValue)
+    console.log("userTasks from dashboard -> ", tasks)
 
         return {
           props: {

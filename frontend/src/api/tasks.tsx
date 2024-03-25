@@ -59,3 +59,19 @@ export async function patchTaskStatus(taskId: number, token: string, body: {stat
        return false 
     }
 }
+
+export async function getUserTasksFromApi(userId: number, token: string) : Promise<Response | null> {
+
+    const url = `http://${API_HOST}:${API_PORT}/tasks/user/${userId}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+        })
+        return (res.status === 200) ? res.json() : null
+    } catch (error){
+        console.log("getUserTasksFromApi error -> ",error)
+       return null 
+    }
+}
