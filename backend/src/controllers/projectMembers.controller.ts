@@ -9,6 +9,9 @@ export default class ProjectMembersController {
 
     try {
         const projectMember = await projectMembersLogic.getProjectMember(userId, projectId)
+        if (!projectMember) {
+          return res.status(404).json(`projectMember with userID ${userId} and projectId ${projectId} was not found`)
+        }
         return res.status(200).json(projectMember)
     } catch(error) {
         return res.status(500).json({ error: 'error => '+error });

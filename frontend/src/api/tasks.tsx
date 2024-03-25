@@ -39,3 +39,23 @@ export async function createProjectTask(projectID: number, token: string, task: 
        return false 
     }
 }
+
+export async function patchTaskStatus(taskId: number, token: string, body: {status_id: number}) : Promise<boolean> {
+
+    const url = `http://${API_HOST}:${API_PORT}/tasks/${taskId}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json', 
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(body)
+        })
+        return res.status === 201   
+    } catch (error){
+        console.log("createProjectTask error -> ",error)
+       return false 
+    }
+}

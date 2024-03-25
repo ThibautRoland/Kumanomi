@@ -17,7 +17,7 @@ type Props = {
   project: projectType,
   tasks: task[] | null,
   token: string,
-  projectMember: ProjectMember
+  projectMember: ProjectMember | null
 }
 
 export default function Project({project, tasks, token, projectMember}: Props) {
@@ -39,10 +39,10 @@ export default function Project({project, tasks, token, projectMember}: Props) {
           <p> userAdminID : {project.user_admin_id}</p>
           <Link href="/dashboard">back to dashboard</Link>
 
-          {projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" && 
             <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
           }
-          {projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" && 
             <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
               <TaskForm projectId={project.id} token={token} projectMember={projectMember} />
             </div>
@@ -98,16 +98,13 @@ export default function Project({project, tasks, token, projectMember}: Props) {
     }
 
     const userId = getItemFromContext(context, "user_id");
-    console.log("userid from mtn", userId)
 
     const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
-    if(projectMemberRes === null || projectMemberRes.status !== 200) {
-      const projectMember = null
-    }
-
-    const projectMember = await projectMemberRes!.json()
-
-    console.log("projectmember from mtn", projectMember)
+    // var projectMember : ProjectMember | null = null
+    // if(!(projectMemberRes === null) && projectMemberRes!.status === 200) {
+    //   projectMember = await projectMemberRes!.json()
+    // }
+    const projectMember = (projectMemberRes && projectMemberRes.status === 200) ? await projectMemberRes!.json() : null
 
     const tasks = await tasksRes?.json()
 
