@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import cors, { CorsOptions } from "cors";
 import Routes from "./routes";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default class Server {
   constructor(app: Application) {
