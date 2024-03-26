@@ -23,6 +23,22 @@ SELECT
 # front todo https://dribbble.com/shots/21594661-Neo-Brutalism-Landing-Page
 
 ## TODO
-- do routing for controllers (! middleware auth protected)
-- show tasks in dashboard
+
+- getTaskFromUserId => middleware isOwner && isClearanceLvl>number
+
+- SECRET_KEY_JWT should be in env variable 
+
+- the role "manager" "reader" should be checked only in the backend
+
+- full read tuto how we extended the REQUEST https://blog.logrocket.com/extend-express-request-object-typescript/
+
+- add buton delete task
+
 - clean code
+
+# later
+- manager can assign task
+
+- projects
+- comments
+- chat

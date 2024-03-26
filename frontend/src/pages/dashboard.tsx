@@ -18,10 +18,11 @@ type IndexProps = {
   tasks: userTask[],
   user_id: number,
   profil_img: string,
-  projects: projectType[]
+  projects: projectType[],
+  token: string
 }
 
-export default function Dashboard({tasks, user_id,profil_img, projects}: IndexProps) {
+export default function Dashboard({tasks, user_id,profil_img, projects, token}: IndexProps) {
   const router = useRouter();
   const [tabNumber, setTabNumber] = useState(1)
 
@@ -82,7 +83,7 @@ export default function Dashboard({tasks, user_id,profil_img, projects}: IndexPr
     </div>
 
     <div className={`${tabNumber === 2 ? '' : "hidden"}`}>
-      <UserTasksList tasks={tasks} />
+      <UserTasksList tasks={tasks} token={token} />
     </div>
   
   </div>
@@ -108,7 +109,8 @@ export default function Dashboard({tasks, user_id,profil_img, projects}: IndexPr
             tasks : tasks, 
             user_id: userIdValue,
             profil_img: profilImgValue,
-            projects: projects
+            projects: projects,
+            token: tokenValue,
           }
         }
   }

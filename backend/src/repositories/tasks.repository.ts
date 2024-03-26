@@ -81,7 +81,7 @@ class TasksRepository {
     }
 
     getUserTasks(userId: number): Promise<QueryResult> {
-        const sql = "SELECT tasks.description, tasks.deadline, tasks.priority, projects.name as projectname, tasks.project_id as projectId, task_status.status \
+        const sql = "SELECT tasks.id, tasks.description, tasks.deadline, tasks.priority, projects.name as projectname, tasks.project_id as projectId, task_status.status \
         FROM tasks \
         LEFT JOIN projects ON projects.id = tasks.project_id \
         LEFT JOIN task_status ON tasks.status_id = task_status.id \

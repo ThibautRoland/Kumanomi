@@ -14,6 +14,7 @@ export type createTask = {
 }
 
 export type userTask = {
+    id: number,
     description: string,
     deadline: Date,
     priority: number,

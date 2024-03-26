@@ -40,7 +40,18 @@ export async function createProjectTask(projectID: number, token: string, task: 
     }
 }
 
-export async function patchTaskStatus(taskId: number, token: string, body: {status_id: number}) : Promise<boolean> {
+export async function patchTaskStatus(taskId: number, token: string, key: string) : Promise<boolean> {
+
+    var status_id = 0;
+    if (key === "pending") { status_id = 1 }
+    if (key === "in-progress") { status_id = 2 }
+    if (key === "blocked") { status_id = 3 }
+    if (key === "done") { status_id = 4 }
+    if (!(["pending", "in-progress", "blocked", "done"].includes(key))) {
+        return false
+    }
+
+    const body: {status_id: number} = {status_id: status_id}
 
     const url = `http://${API_HOST}:${API_PORT}/tasks/${taskId}`
 
@@ -53,7 +64,7 @@ export async function patchTaskStatus(taskId: number, token: string, body: {stat
             },
             body: JSON.stringify(body)
         })
-        return res.status === 201   
+        return res.status === 200 
     } catch (error){
         console.log("createProjectTask error -> ",error)
        return false 
