@@ -23,6 +23,8 @@ type Props = {
 export default function Project({project, tasks, token, projectMember}: Props) {
 
     const [taskFormDisplay, setTaskFormDisplay] = useState(false)
+    const [tasksState, setTasksState] = useState(tasks!)
+    console.log("tasksState -> ", tasksState)
 
     const router = useRouter();
     const { id } = router.query;
@@ -48,12 +50,19 @@ export default function Project({project, tasks, token, projectMember}: Props) {
             </div>
           }
 
-
-          {tasks?.map((task, i) => (
-            <div key={i} className='m-4 p-4'>
-              <TaskCard task={task} />
+          {tasksState && 
+            <div>
+              {tasksState.map((task, i) => (
+                <div key={i} className='m-4 p-4'>
+                  <TaskCard task={task} token={token} tasksState={tasksState} setTasksState={setTasksState} />
+                </div>
+              ))}
             </div>
-          ))}
+          }
+
+          {!tasksState &&
+            <div>No task in this project yet!</div>
+          }
         </Layout>
     );
   }
@@ -92,11 +101,8 @@ export default function Project({project, tasks, token, projectMember}: Props) {
 
     const project = await res.json() as Response
     
-    const tasksRes = await getProjectTasksFromApi(id, tokenValue)
-    if (tasksRes === null || tasksRes.status !== 200) {
-      const tasks = null
-    }
-
+    const tasks = await getProjectTasksFromApi(id, tokenValue) as task[] | null
+   
     const userId = getItemFromContext(context, "user_id");
 
     const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
@@ -106,7 +112,6 @@ export default function Project({project, tasks, token, projectMember}: Props) {
     // }
     const projectMember = (projectMemberRes && projectMemberRes.status === 200) ? await projectMemberRes!.json() : null
 
-    const tasks = await tasksRes?.json()
 
         return {
           props: {

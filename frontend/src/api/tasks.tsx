@@ -1,4 +1,4 @@
-import { createTask } from "@/interfaces/tasks"
+import { createTask, task } from "@/interfaces/tasks"
 
 const API_HOST = process.env.API_HOST
 const API_PORT = process.env.API_PORT
@@ -12,7 +12,7 @@ export async function getProjectTasksFromApi(projectID: number, token: string) :
             method: 'GET',
             headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
         })
-        return res   
+        return (res.status === 200) ? res.json() : null
     } catch (error){
         console.log("getProjectTasksFromApi error -> ",error)
        return null 
@@ -84,5 +84,21 @@ export async function getUserTasksFromApi(userId: number, token: string) : Promi
     } catch (error){
         console.log("getUserTasksFromApi error -> ",error)
        return null 
+    }
+}
+
+export async function deleteTask(taskId: number, token: string) : Promise<boolean> {
+
+    const url = `http://${API_HOST}:${API_PORT}/tasks/${taskId}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'DELETE',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
+        })
+        return res.status === 204
+    } catch (error){
+        console.log("deleteTask error -> ",error)
+       return false 
     }
 }
