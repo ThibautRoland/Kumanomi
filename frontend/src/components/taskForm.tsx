@@ -37,7 +37,7 @@ export const TaskForm = ({projectId, token, projectMember}: Props) => {
 
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         console.log(task);
-        const res = createProjectTask(projectId, token, task, projectMember.role);
+        const res = createProjectTask(projectId, token, task);
         res.then(
             function(value) {if (value) {
                     alert("task successfully added")

@@ -24,7 +24,6 @@ export default function Project({project, tasks, token, projectMember}: Props) {
 
     const [taskFormDisplay, setTaskFormDisplay] = useState(false)
     const [tasksState, setTasksState] = useState(tasks!)
-    console.log("tasksState -> ", tasksState)
 
     const router = useRouter();
     const { id } = router.query;
