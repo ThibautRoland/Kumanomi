@@ -5,9 +5,9 @@ export type task = {
     deadline: Date,
     priority: number,
     status: string,
-    assigned_user_role: string,
-    assigned_user_first_name: string,
-    assigned_user_last_name: string
+    assigned_user_role: string | null,
+    assigned_user_first_name: string | null,
+    assigned_user_last_name: string | null
 }
 
 export type tasksRequest = {

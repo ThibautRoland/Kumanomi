@@ -45,7 +45,7 @@ export default function Project({project, tasks, token, projectMember}: Props) {
           }
           {projectMember && projectMember.role === "manager" && 
             <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
-              <TaskForm projectId={project.id} token={token} projectMember={projectMember} />
+              <TaskForm projectId={project.id} projectName={project.name} token={token} tasksState={tasksState} setTasksState={setTasksState} taskFormDisplay={taskFormDisplay} setTaskFormDisplay={setTaskFormDisplay} />
             </div>
           }
 

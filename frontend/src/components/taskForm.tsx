@@ -1,15 +1,20 @@
 import { createProjectTask } from "@/api/tasks"
 import { ProjectMember } from "@/interfaces/projectMember"
+import { task } from "@/interfaces/tasks"
 import Link from "next/link"
 import { useState } from "react"
 
 type Props = {
     projectId: number,
+    projectName: string
     token: string,
-    projectMember: ProjectMember
+    tasksState: task[] | null,
+    setTasksState: React.Dispatch<React.SetStateAction<task[]>>,
+    taskFormDisplay: boolean,
+    setTaskFormDisplay: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const TaskForm = ({projectId, token, projectMember}: Props) => {
+export const TaskForm = ({projectId, projectName, token, tasksState, setTasksState, taskFormDisplay, setTaskFormDisplay}: Props) => {
     const [task, setTask] = useState({
         description: "",
         deadline: new Date("0001-01-01"),
@@ -39,9 +44,20 @@ export const TaskForm = ({projectId, token, projectMember}: Props) => {
         console.log(task);
         const res = createProjectTask(projectId, token, task);
         res.then(
-            function(value) {if (value) {
+            function(value) {
+                if (value) {
                     alert("task successfully added")
-                    location.reload()
+                    const createdTask = {
+                        ...task, 
+                        id: -1,
+                        name: projectName,
+                        status: "pending",
+                        assigned_user_role: null,
+                        assigned_user_first_name: null,
+                        assigned_user_last_name: null
+                    } as task
+                    setTasksState([... tasksState!, createdTask])
+                    setTaskFormDisplay(false)
                 } else {
                     alert('the inputs were not correctly fulfilled')
                 }},
