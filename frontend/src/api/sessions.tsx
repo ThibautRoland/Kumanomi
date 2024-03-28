@@ -21,7 +21,8 @@ export async function loginApi(loginData: loginRequest) : Promise<userAuth | nul
 
         return {
             token: "",
-            id: 0
+            id: 0,
+            profilImg: ""
         }
     } catch (error){
         console.log("error from loginApi", error)
@@ -46,29 +47,6 @@ export async function getProtectedEndpoint(token : string) : Promise<any> {
     } catch (error){
         console.log(error)
        return error 
-    }
-}
-
-export async function getTasksApi(token: string) : Promise<any> {
-
-    const url = `http://${API_HOST}:${API_PORT}/sessions/tasks`
-
-    try {
-        const res = await fetch(url, {
-            method: 'GET',
-            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
-        })
-        if (res.status !== 200) {
-            return [{ 
-                id: -1,
-                name: "Not a task"
-            }]
-        }
-        const tasks = await res.json() as task[]
-        return tasks
-    } catch (error){
-        console.log("error from getTasksApi",error)
-       return null 
     }
 }
 

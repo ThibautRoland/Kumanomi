@@ -1,3 +1,4 @@
+import { ProjectMember } from '@/interfaces/projectMember';
 import Cookies from 'js-cookie';
 
 // cross crf token warning
@@ -8,6 +9,16 @@ export function saveTokenInCookie(token : string){
 
 export function saveUserIdInCookie(id : string){
     Cookies.set('user_id', id);
+}
+
+// export function saveProjectMemberInCookie(projectMember: ProjectMember) {
+//     Cookies.set("project_member_id", projectMember.id.toString())
+//     Cookies.set("project_member_first_name", projectMember.first_name)
+//     Cookies.set("project_member_role", projectMember.role)
+// }
+
+export function saveUserProfilImgInCookie(profilImg : string){
+    Cookies.set('profil_img', profilImg);
 }
 
 export function getBearerToken() : string{

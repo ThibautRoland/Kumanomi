@@ -14,7 +14,7 @@ class SessionRepository {
   // pgp_sym_decrypt_bytea(msg bytea, psw text [, options text ]) returns bytea
   login(email: string, password: string): Promise<QueryResult> {
 
-    const query = "SELECT id, clearance_level FROM users  WHERE pgp_sym_decrypt(password::bytea, 'kumanomi_secret_key') = ($1) AND email  = ($2)"
+    const query = "SELECT id, clearance_level, profil_img FROM users  WHERE pgp_sym_decrypt(password::bytea, 'kumanomi_secret_key') = ($1) AND email  = ($2)"
     /*const query: string = `SELECT
                 CASE
                     WHEN EXISTS (

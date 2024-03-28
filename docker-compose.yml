@@ -26,6 +26,18 @@ services:
     networks:
       - kumanomi-network
 
+  fileserver:
+    build:
+      dockerfile: ./fileserver/Dockerfile
+    environment:
+      FOLDER_PATH: /public
+    volumes:
+      - ./fileserver/public:/public
+    ports:
+      - 9000:8080
+    networks:
+      - kumanomi-network
+
 networks:
   kumanomi-network:
 

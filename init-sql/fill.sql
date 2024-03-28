@@ -1,11 +1,12 @@
-INSERT INTO users (first_name, last_name, date_of_birth, email, password, clearance_level)
+INSERT INTO users (first_name, last_name, date_of_birth, email, password, clearance_level, profil_img)
 VALUES
-  ('Frodo', 'Baggins', '1995-09-22', 'frodo@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 1),
-  ('Aragorn', 'Elessar', '1870-03-15', 'aragorn@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 2),
-  ('Legolas', 'Greenleaf', '1685-07-12', 'legolas@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 3),
-  ('Gandalf', 'The Grey', '0001-01-01', 'gandalf@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 4),
-  ('Radagast', 'The Brown', '0001-01-01', 'radagastf@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 4),
-  ('Gimli', 'Son of Gloin', '1980-11-05', 'gimli@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 2);
+  ('Frodo', 'Baggins', '1995-09-22', 'frodo@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 1, 'frodo.jpg'),
+  ('Aragorn', 'Elessar', '1870-03-15', 'aragorn@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 2,null),
+  ('Legolas', 'Greenleaf', '1685-07-12', 'legolas@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 3, null),
+  ('Gandalf', 'The Grey', '0001-01-01', 'gandalf@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 4,'gandalf.jpg'),
+  ('Radagast', 'The Brown', '0001-01-01', 'radagastf@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 4,'radagast.jpg'),
+  ('Gimli', 'Son of Gloin', '1980-11-05', 'gimli@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 2,'not_found_img.jpg'),
+  ('Smaug', 'The Dragon', '1000-10-10', 'smaug@lotr.com', (pgp_sym_encrypt('password', 'kumanomi_secret_key')), 2, 'smaug.jpg');
 
 INSERT INTO projects (name, description, deadline, user_admin_id)
 VALUES
@@ -18,7 +19,7 @@ VALUES
 INSERT INTO roles (role) VALUES
   ('viewer'),
   ('contributor'),
-  ('admin');
+  ('manager');
 
 INSERT INTO project_members (project_id, user_id, role_id) VALUES
   -- project ring quest

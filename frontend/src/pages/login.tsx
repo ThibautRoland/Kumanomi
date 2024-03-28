@@ -1,5 +1,5 @@
-import { saveTokenInCookie, saveUserIdInCookie } from '@/api/cookies/cookies'
-import { loginApi } from '@/api/sessions/sessions'
+import { saveTokenInCookie, saveUserIdInCookie, saveUserProfilImgInCookie } from '@/api/cookies/cookies'
+import { loginApi } from '@/api/sessions'
 import { LoginBackError, LoginSucces } from '@/components/login'
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -63,6 +63,7 @@ export default function Login() {
             
             saveTokenInCookie(userAuth!.token)
             saveUserIdInCookie(userAuth!.id.toString())
+            saveUserProfilImgInCookie(userAuth!.profilImg)
             
             router.push({
                 pathname: '/dashboard',

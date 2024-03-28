@@ -35,6 +35,7 @@ export async function getProjectByID(projectID: number ,token: string) : Promise
             method: 'GET',
             headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`},
         })
+        
         return res   
     } catch (error){
         console.log("getProjectByID -> ",error)

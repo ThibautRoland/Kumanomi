@@ -1,4 +1,4 @@
-import { Project } from "../interfaces/Project";
+import { Project } from "../models/types/Project";
 import projectsRepo from "../repositories/projects.repository";
 
 function getAllProjects(): Promise<any> {

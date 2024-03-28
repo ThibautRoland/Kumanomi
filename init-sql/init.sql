@@ -8,7 +8,8 @@ CREATE TABLE users (
     date_of_birth DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    clearance_level INT NOT NULL
+    clearance_level INT NOT NULL,
+    profil_img VARCHAR(255)
 );
 
 -- PROJECTS
