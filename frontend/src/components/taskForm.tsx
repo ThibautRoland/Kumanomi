@@ -1,6 +1,6 @@
 import { createProjectTask } from "@/api/tasks"
 import { ProjectMember } from "@/interfaces/projectMember"
-import { task } from "@/interfaces/tasks"
+import { createTask, task } from "@/interfaces/tasks"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -15,11 +15,18 @@ type Props = {
 }
 
 export const TaskForm = ({projectId, projectName, token, tasksState, setTasksState, taskFormDisplay, setTaskFormDisplay}: Props) => {
-    const [task, setTask] = useState({
+    const defaultTask = {
         description: "",
-        deadline: new Date("0001-01-01"),
+        deadline: "",
         priority: 0
-    })
+    } as {
+        description: string,
+        deadline: string | Date,
+        priority: number
+    }
+
+    const [task, setTask] = useState(defaultTask)
+
 
     const handleTaskData = (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
         const taskData = {... task}
@@ -42,7 +49,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
 
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         console.log(task);
-        const res = createProjectTask(projectId, token, task);
+        const res = createProjectTask(projectId, token, task as createTask);
         res.then(
             function(value) {
                 if (value) {
@@ -58,6 +65,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
                     } as task
                     setTasksState([... tasksState!, createdTask])
                     setTaskFormDisplay(false)
+                    setTask(defaultTask)
                 } else {
                     alert('the inputs were not correctly fulfilled')
                 }},
@@ -72,11 +80,27 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
         <div className="flex flex-col basis-1/3 p-4">
             <h2 className="text-center m-4">Fill in the form</h2>
             <p>What is the task's description</p>
-            <input placeholder="Describe the task" onChange={(event) => handleTaskData(event, "description")} type="text" className="slate-input p-2 mb-2"/>
+            <input 
+                placeholder="Describe the task" 
+                onChange={(event) => handleTaskData(event, "description")} 
+                type="text" 
+                className="slate-input p-2 mb-2"
+                value={task.description === defaultTask.description ? "" : task.description}/>
             <p>What is the task's deadline</p>
-            <input placeholder="yyyy-mm-dd format" onChange={(event) => handleTaskData(event, "deadline")} type="text" className="slate-input p-2 mb-2"/>
+            <input 
+                placeholder="yyyy-mm-dd format" 
+                onChange={(event) => handleTaskData(event, "deadline")} 
+                type="text" 
+                className="slate-input p-2 mb-2"
+                value={task.deadline === defaultTask.deadline ? "" : undefined }
+                />
             <p>What is the task's priority level ?</p>
-            <input placeholder="1-5" onChange={(event) => handleTaskData(event, "priority")} type="text" className="slate-input p-2 mb-2"/>
+            <input 
+                placeholder="1-5" 
+                onChange={(event) => handleTaskData(event, "priority")} 
+                type="text" 
+                className="slate-input p-2 mb-2"
+                value={task.priority === defaultTask.priority ? "" : task.priority}/>
             <div className="flex justify-center mt-2">
                 <button className='mb-3 border rounded-lg w-1/2 p-2 hover:bg-slate-100' onClick={handleClick}>Submit</button>
             </div>
