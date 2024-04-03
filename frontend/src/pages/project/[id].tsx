@@ -9,7 +9,7 @@ import { projectType } from '@/interfaces/projects';
 import { getProjectTasksFromApi } from '@/api/tasks';
 import { TaskCard } from '@/components/taskCard';
 import { TaskForm } from '@/components/taskForm';
-import { getProjectMemberFromApi } from '@/api/projectMembers';
+import { getAllProjectMembersFromApi, getProjectMemberFromApi } from '@/api/projectMembers';
 import { ProjectMember } from '@/interfaces/projectMember';
 import Link from 'next/link';
 
@@ -17,10 +17,11 @@ type Props = {
   project: projectType,
   tasks: task[] | null,
   token: string,
-  projectMember: ProjectMember | null
+  projectMember: ProjectMember | null,
+  projectMembers: ProjectMember[]
 }
 
-export default function Project({project, tasks, token, projectMember}: Props) {
+export default function Project({project, tasks, token, projectMember, projectMembers}: Props) {
 
     const [taskFormDisplay, setTaskFormDisplay] = useState(false)
     const [tasksState, setTasksState] = useState(tasks!)
@@ -33,11 +34,25 @@ export default function Project({project, tasks, token, projectMember}: Props) {
     }
 
     return (<Layout>
-          <h1 className="text-center font-bold text-3xl py-5">Project</h1>          
-          <p> id : {project.id}</p>
-          <p> name : {project.name}</p>
-          <p> description : {project.description}</p>           
-          <p> userAdminID : {project.user_admin_id}</p>
+          <h1 className="text-center font-bold text-3xl py-5">Project</h1>
+          <div className='flex justify-between'>
+            <div>
+              <p> id : {project.id}</p>
+              <p> name : {project.name}</p>
+              <p> description : {project.description}</p>           
+              <p> userAdminID : {project.user_admin_id}</p>
+            </div>
+            <div className='me-3'>
+              <h2 className='text-xl'>Team members:</h2>
+              {projectMembers.map((pm, i) => (
+                <div key={i} className='border'>
+                  <p>{pm.first_name}</p>
+                  <p>{pm.role}</p>
+                </div>
+              ))}
+            </div>
+          
+          </div>          
           <Link href="/dashboard">back to dashboard</Link>
 
           {projectMember && projectMember.role === "manager" && 
@@ -68,15 +83,6 @@ export default function Project({project, tasks, token, projectMember}: Props) {
 
   export async function getServerSideProps(context : any) {
     const id = context.params.id
-    // const id = context.query.id
-    // if(!context.query.id){
-    //   return {
-    //     redirect: {
-    //       destination: '/dashboard', 
-    //       permanent: false, 
-    //     },
-    //   };
-    // }
     const tokenValue = getItemFromContext(context, 'token')
 
     const res = await getProjectByID(id, tokenValue)
@@ -111,13 +117,16 @@ export default function Project({project, tasks, token, projectMember}: Props) {
     // }
     const projectMember = (projectMemberRes && projectMemberRes.status === 200) ? await projectMemberRes!.json() : null
 
+    const projectMembers = await getAllProjectMembersFromApi(id, tokenValue)
+
 
         return {
           props: {
             project : project,
             tasks: tasks,
             token: tokenValue,
-            projectMember: projectMember
+            projectMember: projectMember,
+            projectMembers: projectMembers
           }
         }
 
