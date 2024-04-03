@@ -40,6 +40,10 @@ export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
         )
     }
 
+    const assignTask = () => {
+        console.log("yoo")
+    }
+
     return     <div className="flex flex-col bg-slate-100 p-10">
     <p>task_id: {task.id}</p>
     <p>{task.name}</p>
@@ -47,12 +51,17 @@ export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
     <p>deadline: {task.deadline.toString().split("T")[0]}</p>
     <p>priority level: {task.priority}</p>
     <p>status: {task.status}</p>
-    <p className={assignedState ? "" : "hidden"}>
-        assigned to {task.assigned_user_first_name} {task.assigned_user_last_name}
-    </p>
-    <p className={!assignedState ? "" : "hidden"}>
-        Not assigned
-    </p>
+    {assignedState &&
+        <div>
+            <p>assigned to {task.assigned_user_first_name} {task.assigned_user_last_name}</p>
+        </div>
+    }
+    {!assignedState &&
+        <div>
+            <p>Not assigned</p>
+            <button className="border rounded-lg p-3" onClick={assignTask}>assign task</button>
+        </div>
+    }
     <button className="border rounded-lg p-3" onClick={() => {handleClick(task.id, token)}}>Delete Task</button>
 </div>
 }
