@@ -26,7 +26,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
     }
 
     const [task, setTask] = useState(defaultTask)
-
+    const [deadline, setDeadline] = useState("")
 
     const handleTaskData = (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
         const taskData = {... task}
@@ -37,6 +37,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
                 break
             case "deadline": 
                 taskData.deadline = new Date(value);
+                setDeadline(value)
                 break
             case "priority": 
                 taskData.priority = parseInt(value, 10);
@@ -66,6 +67,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
                     setTasksState([... tasksState!, createdTask])
                     setTaskFormDisplay(false)
                     setTask(defaultTask)
+                    setDeadline("")
                 } else {
                     alert('the inputs were not correctly fulfilled')
                 }},
@@ -92,7 +94,7 @@ export const TaskForm = ({projectId, projectName, token, tasksState, setTasksSta
                 onChange={(event) => handleTaskData(event, "deadline")} 
                 type="text" 
                 className="slate-input p-2 mb-2"
-                value={task.deadline === defaultTask.deadline ? "" : undefined }
+                value={task.deadline === defaultTask.deadline ? "" : deadline }
                 />
             <p>What is the task's priority level ?</p>
             <input 

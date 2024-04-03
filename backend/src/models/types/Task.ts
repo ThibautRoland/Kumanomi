@@ -22,3 +22,11 @@ export type userTask = {
     projectId: number,
     status: string
 }
+
+export type patchTask = {
+    description: string | null,
+    deadline: Date | null,
+    priority: number | null,
+    statusId: number | null,
+    projectMemberId: number | null
+}

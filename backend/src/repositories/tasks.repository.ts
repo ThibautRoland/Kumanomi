@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from "pg"
 import initPool from "./initPool"
-import { createTask } from "../models/types/Task"
+import { createTask, patchTask } from "../models/types/Task"
 
 class TasksRepository {
     private pool: Pool
@@ -105,6 +105,20 @@ class TasksRepository {
             })
         })
 
+    }
+
+    patchTask(taskId: number, body: patchTask): Promise<QueryResult> {
+        const query = "UPDATE tasks SET status_id = ($1) WHERE id = ($2) RETURNING status_id;"
+        const values = [body.status_id, taskId]
+        
+        return new Promise((resolve, reject) => {
+            this.pool.query(query, values, (error: Error, result: QueryResult) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(result)
+            })
+        })
     }
 }
 

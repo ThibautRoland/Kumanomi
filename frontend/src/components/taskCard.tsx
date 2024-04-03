@@ -44,7 +44,7 @@ export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
     <p>task_id: {task.id}</p>
     <p>{task.name}</p>
     <p>{task.description}</p>
-    <p>deadline: {task.deadline.toString()}</p>
+    <p>deadline: {task.deadline.toString().split("T")[0]}</p>
     <p>priority level: {task.priority}</p>
     <p>status: {task.status}</p>
     <p className={assignedState ? "" : "hidden"}>

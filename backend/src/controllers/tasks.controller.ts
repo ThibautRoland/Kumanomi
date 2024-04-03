@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { RequestLogin } from "../models/types/RequestLogin";
-import { createTask } from "../models/types/Task";
+import { createTask, patchTask } from "../models/types/Task";
 const tasksLogic = require('../logic/tasks.logic');
 
 
@@ -83,4 +83,30 @@ export default class TasksController {
     }
 
   }
+
+  async patchTask(req: Request, res: Response) {
+    const taskId = req.params.taskId;
+    const patchBody = req.body as patchTask;
+
+    let nullCount = 0;
+    Object.values(patchBody).forEach((value) => {
+      if (value === null) {
+        nullCount++
+      }
+    })
+
+    if (nullCount === Object.keys(patchBody).length) {
+      return res.status(422).json("should patch at least one field")
+    }
+
+    try {
+      const patchedTask = await tasksLogic.patchTask(taskId, patchBody)
+      return res.status(200).json({
+        message: `task with id ${taskId} has been successfully patched`,
+      })
+    } catch (error) {
+      return res.status(500).json({ error: error})
+    }
+  }
 }
+
