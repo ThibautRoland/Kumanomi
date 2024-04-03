@@ -9,8 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'kum-cream': '#FFFCDD',
+        'kum-cream': '#FFF5EA',
+        'kum-yellow': '#FDFD96',
+        'kum-light-grey': '#737373',
       },
+      boxShadow: {
+        'kum-black': '8px 8px 0px black',
+      }
     },
   },
   plugins: [],

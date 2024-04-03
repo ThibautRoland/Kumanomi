@@ -59,16 +59,16 @@ export default function Project({project, tasks, token, projectMember, projectMe
           </div>          
           <Link href="/dashboard">back to dashboard</Link>
 
-          {projectMember && projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" &&
             <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
           }
-          {projectMember && projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" &&
             <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
               <TaskForm projectId={project.id} projectName={project.name} token={token} tasksState={tasksState} setTasksState={setTasksState} taskFormDisplay={taskFormDisplay} setTaskFormDisplay={setTaskFormDisplay} />
             </div>
           }
 
-          {tasksState && 
+          {tasksState &&
             <div>
               {tasksState.map((task, i) => (
                 <div key={i} className='m-4 p-4'>
@@ -97,6 +97,15 @@ export default function Project({project, tasks, token, projectMember, projectMe
 
   export async function getServerSideProps(context : any) {
     const id = context.params.id
+    // const id = context.query.id
+    // if(!context.query.id){
+    //   return {
+    //     redirect: {
+    //       destination: '/dashboard',
+    //       permanent: false,
+    //     },
+    //   };
+    // }
     const tokenValue = getItemFromContext(context, 'token')
 
     const res = await getProjectByID(id, tokenValue)
@@ -118,10 +127,22 @@ export default function Project({project, tasks, token, projectMember, projectMe
       };
     }
 
+    //TODO add error FORBIDEN
+    if (res.status == 403){
+      return {
+        redirect: {
+          destination: '/dashboard',
+          permanent: false,
+        },
+      };
+    }
+
+    console.log(res.status)
+
     const project = await res.json() as Response
-    
+
     const tasks = await getProjectTasksFromApi(id, tokenValue) as task[] | null
-   
+
     const userId = getItemFromContext(context, "user_id");
 
     const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
