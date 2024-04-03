@@ -31,10 +31,34 @@ class ProjectMembersRepository {
                 resolve(result)
             })
         })
+    }
+
+    getAllProjectMembers(projectId: number): Promise<QueryResult> {
+
+        const sql = "SELECT project_members.id, first_name, role FROM project_members \
+            JOIN users ON users.id = project_members.user_id \
+            JOIN roles ON roles.id = project_members.role_id \
+            WHERE project_id = ($1);"
+
+        const values = [projectId]
+
+        const query = {
+          text: sql,
+          values: values
+        };
+        return new Promise((resolve, reject) => {
+            this.pool.query(query, (error: Error, result: QueryResult) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(result)
+            })
+        })
 
 
       
     }
+
 
 }
 

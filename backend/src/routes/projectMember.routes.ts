@@ -13,6 +13,7 @@ class ProjectMemberRoutes {
   
     intializeRoutes() {
       this.router.get("/:userId/:projectId", authenticateToken, this.projectMembersController.getProjectMember)
+      this.router.get("/:projectId", authenticateToken, this.projectMembersController.getAllProjectMembers)
     }
   }
   
