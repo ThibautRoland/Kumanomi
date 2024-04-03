@@ -27,6 +27,6 @@ export type patchTask = {
     description: string | null,
     deadline: Date | null,
     priority: number | null,
-    statusId: number | null,
-    projectMemberId: number | null
+    status_id: number | null,
+    project_member_id: number | null
 }

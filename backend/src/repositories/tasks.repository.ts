@@ -108,11 +108,19 @@ class TasksRepository {
     }
 
     patchTask(taskId: number, body: patchTask): Promise<QueryResult> {
-        const query = "UPDATE tasks SET status_id = ($1) WHERE id = ($2) RETURNING status_id;"
-        const values = [body.status_id, taskId]
-        
+        const keys = Object.keys(body);
+        const values = Object.values(body);
+
+        const fieldNames = keys.filter((key, i) => values[i] !== null)
+        const fieldValues = values.filter((value) => value !== null)
+
+        const setClause = fieldNames.map((fieldName, index) => `${fieldName} = $${index + 1}`).join(', ');
+
+        const query = `UPDATE tasks SET ${setClause} WHERE id = $${fieldValues.length + 1} RETURNING tasks.id, description, deadline, project_id, status_id, priority, project_member_id;`;
+        const queryValues = [...fieldValues, taskId];
+
         return new Promise((resolve, reject) => {
-            this.pool.query(query, values, (error: Error, result: QueryResult) => {
+            this.pool.query(query, queryValues, (error: Error, result: QueryResult) => {
                 if (error) {
                     reject(error)
                 }

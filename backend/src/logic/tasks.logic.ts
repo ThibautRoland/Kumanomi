@@ -1,3 +1,4 @@
+import { QueryResult } from "pg";
 import { createTask, patchTask, task, userTask } from "../models/types/Task";
 import tasksRepo from "../repositories/tasks.repository";
 
@@ -72,12 +73,11 @@ function getUserTasks(userId: number): Promise<userTask[] | null> {
     })
 }
 
-function patchTask(taskId: number, body: patchTask): Promise<any> {
+function patchTask(taskId: number, body: patchTask): Promise<QueryResult> {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await tasksRepo.patchTask(taskId, body)
-            const patchedTask = result.rows[0]
-            resolve(patchedTask)
+            resolve(result)
         } catch (error) {
             reject(error)
         }

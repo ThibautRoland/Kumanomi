@@ -100,9 +100,16 @@ export default class TasksController {
     }
 
     try {
-      const patchedTask = await tasksLogic.patchTask(taskId, patchBody)
+      const patchResult = await tasksLogic.patchTask(taskId, patchBody)
+      if (patchResult.rowCount !== 1) {
+        return res.status(500).json("should have updated one task but updated "+ patchResult.rowCount)
+      }
+      if (patchResult.rows.length !== 1) {
+        return res.status(500).json("should have one task returned from patching but got "+ patchResult.rows.length)
+      }
       return res.status(200).json({
         message: `task with id ${taskId} has been successfully patched`,
+        task: patchResult.rows[0]
       })
     } catch (error) {
       return res.status(500).json({ error: error})
