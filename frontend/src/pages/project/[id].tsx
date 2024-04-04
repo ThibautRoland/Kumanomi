@@ -1,7 +1,7 @@
 import { tasksRequest } from '@/interfaces/tasks';
 import { getBearerToken, getItemFromContext } from '@/api/cookies/cookies'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { task } from '@/interfaces/tasks';
 import { Layout } from '@/components/layout';
 import { getProjectByID } from '@/api/projects';
@@ -12,22 +12,26 @@ import { TaskForm } from '@/components/taskForm';
 import { getAllProjectMembersFromApi, getProjectMemberFromApi } from '@/api/projectMembers';
 import { ProjectMember } from '@/interfaces/projectMember';
 import Link from 'next/link';
+import { AssignTaskModal } from '@/components/assignTaskModal';
 
 type Props = {
   project: projectType,
   tasks: task[] | null,
   token: string,
   projectMember: ProjectMember | null,
-  projectMembers: ProjectMember[]
+  projectMembers: ProjectMember[],
+  // taskFocus: null | task,
+  // setTaskFocus: React.Dispatch<React.SetStateAction<null | task>>;
 }
 
 export default function Project({project, tasks, token, projectMember, projectMembers}: Props) {
 
     const [taskFormDisplay, setTaskFormDisplay] = useState(false)
     const [tasksState, setTasksState] = useState(tasks!)
+    const [showModal, setShowModal] = useState(false);
+    const [taskFocus, setTaskFocus] = useState<task | null>(null)
 
     const router = useRouter();
-    const { id } = router.query;
 
     const handleClick = () => {
       setTaskFormDisplay(!taskFormDisplay)
@@ -68,7 +72,11 @@ export default function Project({project, tasks, token, projectMember, projectMe
             <div>
               {tasksState.map((task, i) => (
                 <div key={i} className='m-4 p-4'>
-                  <TaskCard task={task} token={token} tasksState={tasksState} setTasksState={setTasksState} />
+                  <TaskCard task={task} token={token} 
+                    tasksState={tasksState} setTasksState={setTasksState}
+                    showModal={showModal} setShowModal={setShowModal}
+                    taskFocus={taskFocus} setTaskFocus={setTaskFocus}
+                  />
                 </div>
               ))}
             </div>
@@ -77,6 +85,12 @@ export default function Project({project, tasks, token, projectMember, projectMe
           {!tasksState &&
             <div>No task in this project yet!</div>
           }
+
+          <AssignTaskModal showModal={showModal} setShowModal={setShowModal}
+            taskFocus={taskFocus} setTaskFocus={setTaskFocus}
+            projectMembers={projectMembers}
+            token={token}
+          />
         </Layout>
     );
   }

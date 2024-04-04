@@ -7,9 +7,13 @@ type Props = {
     token: string,
     tasksState: task[],
     setTasksState: React.Dispatch<React.SetStateAction<task[]>>;
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    taskFocus: null | task,
+    setTaskFocus: React.Dispatch<React.SetStateAction<null | task>>;
 }
 
-export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
+export const TaskCard = ({task, token, tasksState, setTasksState, showModal, setShowModal, taskFocus, setTaskFocus}: Props) => {
     const [assignedState, setAssignedState] = useState(task.assigned_user_first_name !== null)
     console.log(task.assigned_user_first_name !== null)
 
@@ -40,8 +44,12 @@ export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
         )
     }
 
-    const assignTask = () => {
-        console.log("yoo")
+    const openModal = (task: task) => {
+        console.log("openModal")
+        setTaskFocus(task)
+        if (taskFocus) {
+            setShowModal(true)
+        }
     }
 
     return     <div className="flex flex-col bg-slate-100 p-10">
@@ -59,9 +67,10 @@ export const TaskCard = ({task, token, tasksState, setTasksState}: Props) => {
     {!assignedState &&
         <div>
             <p>Not assigned</p>
-            <button className="border rounded-lg p-3" onClick={assignTask}>assign task</button>
+            <button className="border rounded-lg p-3" onClick={() => openModal(task)}>assign task</button>
         </div>
     }
     <button className="border rounded-lg p-3" onClick={() => {handleClick(task.id, token)}}>Delete Task</button>
+
 </div>
 }

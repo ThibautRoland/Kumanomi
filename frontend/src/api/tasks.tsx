@@ -101,3 +101,25 @@ export async function deleteTask(taskId: number, token: string) : Promise<boolea
        return false 
     }
 }
+
+export async function patchTask(projectMemberId: number, taskId: number, token: string) : Promise<boolean> {
+
+    const body: {project_member_id: number} = {project_member_id: projectMemberId}
+
+    const url = `http://${API_HOST}:${API_PORT}/tasks/patch/${taskId}`
+
+    try {
+        const res = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json', 
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(body)
+        })
+        return res.status === 200 
+    } catch (error){
+        console.log("createProjectTask error -> ",error)
+       return false 
+    }
+}
