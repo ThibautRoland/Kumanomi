@@ -1,6 +1,7 @@
 import { deleteTask } from "@/api/tasks"
 import { task } from "@/interfaces/tasks"
 import { useState } from "react"
+import { Card } from "./theme/card";
 
 type Props = {
     task: task,
@@ -44,6 +45,7 @@ export const TaskCard = ({task, token, tasksState, setTasksState, showModal, set
         )
     }
 
+<<<<<<< HEAD
     const openModal = (task: task) => {
         console.log("openModal")
         setTaskFocus(task)
@@ -72,5 +74,44 @@ export const TaskCard = ({task, token, tasksState, setTasksState, showModal, set
     }
     <button className="border rounded-lg p-3" onClick={() => {handleClick(task.id, token)}}>Delete Task</button>
 
+=======
+    return <Card>
+
+    <div className="flex flex-col italic space-y-8">
+                <div className="flex flex-row justify-end items-center">
+
+        <div className="text-kum-light-grey">☠ quest end  {task.deadline.toString().split("T")[0]}</div>
+
+        </div>
+
+        <div className="flex flex-row items-center space-x-4">
+      <img className="max-h-8 max-w-8" src="/icon_scroll.png"/>
+      <div className="font-bold">Quest</div>
+      <div>{task.description}</div>
+      <div className="text-kum-light-grey">[ id: {task.id} ]</div>
+      </div>
+
+      <div className="flex flex-row space-x-4">
+        <div className="font-bold">Priority</div>
+        <div>{task.priority}</div>
+      </div>
+
+      <div className="flex flex-row space-x-4">
+        <div className="font-bold">Status</div>
+        <div>{task.status}</div>
+      </div>
+
+    { assignedState ?
+        <div className="flex flex-row space-x-4">
+
+            <img className="kum-mini-profil-pic" src={`http://localhost:9000/profils_pics/${task.assigned_user_first_name?.toLowerCase()}.jpg`}/>
+            <div>assigned to {task.assigned_user_first_name} {task.assigned_user_last_name}</div>
+        </div> :
+
+        <div>Not assigned</div>
+    }
+    <button className="kum-btn" onClick={() => {handleClick(task.id, token)}}>Delete Task</button>
+>>>>>>> d233727 (feat(front): make taskCard)
 </div>
+</Card>
 }

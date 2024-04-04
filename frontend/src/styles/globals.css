@@ -14,10 +14,18 @@
     }
 
     .tib-tab-active {
-        @apply inline-block p-4 text-gray-700 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500;   
+        @apply inline-block p-4 text-gray-700 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500;
     }
-    
+
     .tib-tab-sleep {
         @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300;
+    }
+
+    .kum-mini-profil-pic {
+        @apply max-h-8 max-w-8 rounded-full border-2 border-black
+    }
+
+    .kum-btn {
+       @apply h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full
     }
 }
