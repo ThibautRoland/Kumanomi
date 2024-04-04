@@ -17,3 +17,7 @@ export function mockImageNameFromId(id: number) : string {
         return "404.jpg"
     }
   }
+
+  export function mockImageNameFromFirstName(firstName: string) : string {
+    return firstName.toLowerCase()+".jpg"
+  }
