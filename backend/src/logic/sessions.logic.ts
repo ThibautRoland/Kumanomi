@@ -9,12 +9,14 @@ type userAuth = {
     profilImg: string
 }
 
+const secretKeyJwt = process.env.SECRET_KEY_JWT
+
 // https://www.codecademy.com/resources/docs/typescript/promises
 // promise + try catch to read the promise
 function isExist(req: RequestLogin): Promise<userAuth> {
     return new Promise(async (resolve, reject) => {
 
-        try {   
+        try {
             const value = await sessionsRepo.login(req.email, req.password);
             console.log(value.rows)
             if (value.rows.length<1) {
@@ -31,17 +33,15 @@ function isExist(req: RequestLogin): Promise<userAuth> {
                 id: res.id as number,
                 profilImg: res.profil_img
             })
-            
+
         } catch (error){
             reject(error)
         }
     });
 }
 
-const SECRET_KEY_JWT = 'KUMANOMI_JWT_KEY_ENCRYPTION_UN_PEU_COMME_CE_QUON_A_FAIT_POUR_POSTGRES_UNE_SORTE_DE_CLEF_RANDOME_QUON_VA_STOCKER_EN_VARIABLE_DENV_CA_VA_ZINC_SINON'
-
 function createJwtToken(email : string, id : number){
-    return jwt.sign({ email: email, id : id}, SECRET_KEY_JWT);
+    return jwt.sign({ email: email, id : id}, secretKeyJwt);
 }
 
 module.exports = {
