@@ -20,9 +20,7 @@ type Props = {
   tasks: task[] | null,
   token: string,
   projectMember: ProjectMember | null,
-  projectMembers: ProjectMember[],
-  // taskFocus: null | task,
-  // setTaskFocus: React.Dispatch<React.SetStateAction<null | task>>;
+  projectMembers: ProjectMember[]
 }
 
 export default function Project({project, tasks, token, projectMember, projectMembers}: Props) {
@@ -91,7 +89,8 @@ export default function Project({project, tasks, token, projectMember, projectMe
           <AssignTaskModal showModal={showModal} setShowModal={setShowModal}
             taskFocus={taskFocus} setTaskFocus={setTaskFocus}
             projectMembers={projectMembers}
-            token={token}
+            token={token} project={project}
+            setTasksState={setTasksState}
           />
         </Layout>
     );

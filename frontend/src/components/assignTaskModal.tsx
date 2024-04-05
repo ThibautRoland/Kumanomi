@@ -1,5 +1,6 @@
-import { patchTask } from "@/api/tasks";
+import { getProjectTasksFromApi, patchTask } from "@/api/tasks";
 import { ProjectMember } from "@/interfaces/projectMember";
+import { projectType } from "@/interfaces/projects";
 import { task } from "@/interfaces/tasks";
 import { useState } from "react";
 
@@ -9,14 +10,32 @@ type props = {
     taskFocus: null | task,
     setTaskFocus: React.Dispatch<React.SetStateAction<null | task>>;
     projectMembers: ProjectMember[],
-    token: string
+    token: string,
+    setTasksState: React.Dispatch<React.SetStateAction<task[]>>;
+    project: projectType
 }
 
-export const AssignTaskModal = ({showModal, setShowModal, taskFocus, setTaskFocus, projectMembers, token}: props) => {
+export const AssignTaskModal = ({showModal, setShowModal, taskFocus, setTaskFocus, projectMembers, token, setTasksState, project}: props) => {
 
     const handleClick = (projectMemberId: number, taskId:  number) => {
         console.log(projectMemberId)
         const res = patchTask(projectMemberId, taskId, token)
+        res.then(
+          async function(value) {
+            if (value) {
+              const updatedTasks = await getProjectTasksFromApi(project.id, token) as task[] | null
+              setTasksState(updatedTasks!)
+              alert("task was successfully assigned")
+              setShowModal(false)
+            } else {
+              alert("task wasn't successfully assigned, try again")
+            }
+          },
+          function(error) {
+            console.log('error from patchTask -> ', error)
+            alert("there's been a problem, try again later...")
+          }
+        )
     }
 
     return     <div>
