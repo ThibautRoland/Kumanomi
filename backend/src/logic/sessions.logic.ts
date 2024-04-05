@@ -41,7 +41,8 @@ function isExist(req: RequestLogin): Promise<userAuth> {
 }
 
 function createJwtToken(email : string, id : number){
-    return jwt.sign({ email: email, id : id}, secretKeyJwt);
+    const options = {expiresIn : "10s"} as jwt.SignOptions
+    return jwt.sign({ email: email, id : id}, secretKeyJwt, options);
 }
 
 module.exports = {
