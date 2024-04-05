@@ -14,6 +14,7 @@ import { ProjectMember } from '@/interfaces/projectMember';
 import Link from 'next/link';
 import { AssignTaskModal } from '@/components/assignTaskModal';
 import { mockImageNameFromFirstName } from '@/utils/mock';
+import { cleanRedirect, isTokenExpired } from '@/utils/api';
 
 type Props = {
   project: projectType,
@@ -98,47 +99,30 @@ export default function Project({project, tasks, token, projectMember, projectMe
 
   export async function getServerSideProps(context : any) {
     const id = context.params.id
-    // const id = context.query.id
-    // if(!context.query.id){
-    //   return {
-    //     redirect: {
-    //       destination: '/dashboard',
-    //       permanent: false,
-    //     },
-    //   };
-    // }
     const tokenValue = getItemFromContext(context, 'token')
 
     const res = await getProjectByID(id, tokenValue)
+
     if (res == null) {
       return {
         redirect: {
           destination: '/dashboard',
-          permanent: false,
         },
       };
     }
+
+    if ( isTokenExpired(res)) {
+      return cleanRedirect("/login")
+    }
+
 
     if (res.status == 404){
-      return {
-        redirect: {
-          destination: '/notfound',
-          permanent: false,
-        },
-      };
+      return cleanRedirect("/notfound")
     }
 
-    //TODO add error FORBIDEN
     if (res.status == 403){
-      return {
-        redirect: {
-          destination: '/dashboard',
-          permanent: false,
-        },
-      };
+      return cleanRedirect("/dashboard")
     }
-
-    console.log(res.status)
 
     const project = await res.json() as Response
 
@@ -147,10 +131,7 @@ export default function Project({project, tasks, token, projectMember, projectMe
     const userId = getItemFromContext(context, "user_id");
 
     const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
-    // var projectMember : ProjectMember | null = null
-    // if(!(projectMemberRes === null) && projectMemberRes!.status === 200) {
-    //   projectMember = await projectMemberRes!.json()
-    // }
+
     const projectMember = (projectMemberRes && projectMemberRes.status === 200) ? await projectMemberRes!.json() : null
 
     const projectMembers = await getAllProjectMembersFromApi(id, tokenValue)
