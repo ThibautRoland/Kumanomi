@@ -10,6 +10,7 @@ type userAuth = {
 }
 
 const secretKeyJwt = process.env.SECRET_KEY_JWT
+const expireJwt = process.env.EXPIRE_JWT
 
 // https://www.codecademy.com/resources/docs/typescript/promises
 // promise + try catch to read the promise
@@ -41,7 +42,7 @@ function isExist(req: RequestLogin): Promise<userAuth> {
 }
 
 function createJwtToken(email : string, id : number){
-    const options = {expiresIn : "10s"} as jwt.SignOptions
+    const options = {expiresIn : expireJwt} as jwt.SignOptions
     return jwt.sign({ email: email, id : id}, secretKeyJwt, options);
 }
 
