@@ -7,18 +7,27 @@ const secretKeyJwt = process.env.SECRET_KEY_JWT
 
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
   const token = req.header('Authorization')?.split(' ')[1];
-  //const token = req.headers.get('Authorization')?.split(' ')[1];
 
   if (!token) {
     return res.sendStatus(401);
   }
 
- 
+
 
   jwt.verify(token, secretKeyJwt, (err, jwtPayload) => {
     console.log("from authenticateToken", jwtPayload)
     if (err) {
+      console.log("error checking the token",err)
+
+      // token expired
+      // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#tokenexpirederror
+      if (err instanceof  jwt.TokenExpiredError) {
+        res.setHeader("WWW-Authenticate","token_expired")
+        return res.sendStatus(401);
+      }
+
       return res.sendStatus(403);
+
     }
 
     if (!jwtPayload) {
