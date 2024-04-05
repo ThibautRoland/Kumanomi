@@ -54,17 +54,17 @@ export default function Login() {
                 setStateLogin(StateLogin.ErrorBack)
                 return
             }
-            
+
             if (userAuth!.token.length === 0) {
                 setStateLogin(StateLogin.Failed)
                 return
             }
             setStateLogin(StateLogin.Success)
-            
+
             saveTokenInCookie(userAuth!.token)
             saveUserIdInCookie(userAuth!.id.toString())
             saveUserProfilImgInCookie(userAuth!.profilImg)
-            
+
             router.push({
                 pathname: '/dashboard',
                 query: { token: userAuth!.token }
@@ -73,19 +73,23 @@ export default function Login() {
     }
 
     return (<div>
-        <h1 className="text-center font-bold text-3xl py-5">Log into your account!</h1>
+        <h1 className="text-center font-bold text-3xl py-5">Continue your adventure !</h1>
         <div className="flex flex-row">
             <div className="basis-1/3"></div>
 
-            <div className={`${ (getStateLogin  === 0 || getStateLogin === 1 || getStateLogin === 2 ) ? 'display' : 'hidden'}`}>
-                <div className={`basis-1/3 ${ getStateLogin === StateLogin.Failed ? 'border-2 border-red-400': '' }`} >
+            <div className={`${ (getStateLogin  === 0 || getStateLogin === 1 || getStateLogin === 2 ) ? 'display italic' : 'hidden'}`}>
+                <div className={`flex flex-col space-y-4 ${ getStateLogin === StateLogin.Failed ? 'border-2 border-red-400': '' }`} >
                     <div className={`${ getStateLogin === StateLogin.WrongEmailFormat ? 'border-2 border-red-400': ''}`}>
-                        <p>email address</p> 
-                        <input placeholder={`${ getStateLogin === StateLogin.WrongEmailFormat ? 'Wrong email format': 'john.doe@example.com '}`}type="text" className="bg-slate-300 p-3" onChange={handleEmailChange}/>
+                        <p className='font-bold '>email address</p>
+                        <input placeholder={`${ getStateLogin === StateLogin.WrongEmailFormat ? 'Wrong email format': 'john.doe@example.com '}`}type="text" className="kum-input" onChange={handleEmailChange}/>
                     </div>
-                    <p>password</p>
-                    <input placeholder="password" type="password" className="bg-slate-300 p-3" onChange={handlePasswordChange} />
-                    <button className='border p-3 rounded-lg' onClick={login}>Login</button>
+                    <div>
+                    <p className='font-bold '>password</p>
+                    <input placeholder="password" type="password" className="kum-input" onChange={handlePasswordChange} />
+                    </div>
+
+                    <button className='kum-btn' onClick={login}>Login</button>
+
                 </div>
             </div>
 
@@ -95,8 +99,8 @@ export default function Login() {
             <div className={`${getStateLogin === StateLogin.ErrorBack ? '' : 'hidden'}`}>
                 <LoginBackError/>
             </div>
-            
-            
+
+
             <div className="basisi-1/3"></div>
         </div>
 

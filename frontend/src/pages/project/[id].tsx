@@ -13,6 +13,7 @@ import { getAllProjectMembersFromApi, getProjectMemberFromApi } from '@/api/proj
 import { ProjectMember } from '@/interfaces/projectMember';
 import Link from 'next/link';
 import { AssignTaskModal } from '@/components/assignTaskModal';
+import { mockImageNameFromFirstName } from '@/utils/mock';
 
 type Props = {
   project: projectType,
@@ -43,36 +44,37 @@ export default function Project({project, tasks, token, projectMember, projectMe
             <div>
               <p> id : {project.id}</p>
               <p> name : {project.name}</p>
-              <p> description : {project.description}</p>           
+              <p> description : {project.description}</p>
               <p> userAdminID : {project.user_admin_id}</p>
             </div>
             <div className='me-3'>
               <h2 className='text-xl'>Team members:</h2>
               {projectMembers.map((pm, i) => (
                 <div key={i} className='border'>
+                  <img className='kum-mini-profil-pic' src={`http://localhost:9000/profils_pics/${mockImageNameFromFirstName(pm.first_name)}`}/>
                   <p>{pm.first_name}</p>
                   <p>{pm.role}</p>
                 </div>
               ))}
             </div>
-          
-          </div>          
+
+          </div>
           <Link href="/dashboard">back to dashboard</Link>
 
-          {projectMember && projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" &&
             <button className='border rounded-lg p-3' onClick={handleClick}>Add a task</button>
           }
-          {projectMember && projectMember.role === "manager" && 
+          {projectMember && projectMember.role === "manager" &&
             <div className={`${taskFormDisplay ? '' : 'hidden'}`}>
               <TaskForm projectId={project.id} projectName={project.name} token={token} tasksState={tasksState} setTasksState={setTasksState} taskFormDisplay={taskFormDisplay} setTaskFormDisplay={setTaskFormDisplay} />
             </div>
           }
 
-          {tasksState && 
+          {tasksState &&
             <div>
               {tasksState.map((task, i) => (
                 <div key={i} className='m-4 p-4'>
-                  <TaskCard task={task} token={token} 
+                  <TaskCard task={task} token={token}
                     tasksState={tasksState} setTasksState={setTasksState}
                     showModal={showModal} setShowModal={setShowModal}
                     taskFocus={taskFocus} setTaskFocus={setTaskFocus}
@@ -97,6 +99,15 @@ export default function Project({project, tasks, token, projectMember, projectMe
 
   export async function getServerSideProps(context : any) {
     const id = context.params.id
+    // const id = context.query.id
+    // if(!context.query.id){
+    //   return {
+    //     redirect: {
+    //       destination: '/dashboard',
+    //       permanent: false,
+    //     },
+    //   };
+    // }
     const tokenValue = getItemFromContext(context, 'token')
 
     const res = await getProjectByID(id, tokenValue)
@@ -118,10 +129,22 @@ export default function Project({project, tasks, token, projectMember, projectMe
       };
     }
 
+    //TODO add error FORBIDEN
+    if (res.status == 403){
+      return {
+        redirect: {
+          destination: '/dashboard',
+          permanent: false,
+        },
+      };
+    }
+
+    console.log(res.status)
+
     const project = await res.json() as Response
-    
+
     const tasks = await getProjectTasksFromApi(id, tokenValue) as task[] | null
-   
+
     const userId = getItemFromContext(context, "user_id");
 
     const projectMemberRes = await getProjectMemberFromApi(parseInt(userId, 10), id, tokenValue)
